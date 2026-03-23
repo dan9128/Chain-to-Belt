@@ -31,6 +31,7 @@
   --text3:#7E858D;
   --border:#E1E4E8;
   --shadow:0 10px 28px rgba(24, 29, 35, .05);
+  --sidebar-w:248px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -42,19 +43,30 @@ body{
   font-size:15px;
   word-break:keep-all;
   overflow-wrap:anywhere;
+  overflow-x:hidden;
 }
-.ci-band{
-  position:sticky; top:0; z-index:30;
-  height:8px; display:grid;
-  grid-template-columns:1.5fr 1.5fr 1fr 1fr 1fr;
-  box-shadow:0 1px 0 rgba(0,0,0,.04);
-}
-.ci-band span:nth-child(1){background:var(--drb-red)}
-.ci-band span:nth-child(2){background:var(--drb-gray)}
-.ci-band span:nth-child(3){background:var(--drb-light)}
-.ci-band span:nth-child(4){background:var(--drb-silver)}
-.ci-band span:nth-child(5){background:var(--drb-gold)}
-.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 76px}
+/* === SIDEBAR === */
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--card);border-right:1px solid var(--border);z-index:100;transition:transform .3s;display:flex;flex-direction:column}
+.sidebar.closed{transform:translateX(calc(var(--sidebar-w)*-1))}
+.sidebar-hd{padding:26px 22px 18px;border-bottom:1px solid var(--border)}
+.sidebar-logo{font-size:22px;font-weight:800;color:var(--drb-red);letter-spacing:-.04em;line-height:1.1}
+.sidebar-logo span{color:var(--drb-gray)}
+.sidebar-sub{font-size:11px;color:var(--text3);margin-top:5px}
+.sidebar-nav{flex:1;overflow-y:auto;padding:18px 12px}
+.nav-grp{margin-bottom:12px}.nav-grp-t{font-size:9px;font-weight:800;color:var(--drb-light);text-transform:uppercase;letter-spacing:1px;padding:4px 12px;margin-bottom:2px}
+.nav-i{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text2);transition:all .18s;user-select:none;text-decoration:none}
+.nav-i+.nav-i{margin-top:4px}
+.nav-i:hover{background:var(--drb-gray-soft);color:var(--text);transform:translateX(2px)}
+.nav-i.active{background:var(--drb-red-soft);color:var(--drb-red-deep);font-weight:800}
+.nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:var(--drb-light)}
+.nav-i.active .nav-dot{background:var(--drb-red)}
+.sb-btn{position:fixed;top:14px;left:14px;z-index:200;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:left .3s,box-shadow .15s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.sb-btn:hover{box-shadow:0 6px 18px rgba(32,35,39,.1);transform:translateY(-1px)}
+.sb-btn.shifted{left:calc(var(--sidebar-w) + 16px)}
+.sb-btn svg{width:18px;height:18px;stroke:var(--drb-gray);stroke-width:2;fill:none;stroke-linecap:round}
+
+.wrap{max-width:1180px;margin-left:var(--sidebar-w);transition:margin-left .3s;padding:26px 20px 76px}
+.wrap.exp{margin-left:0}
 .main-title{
   text-align:center;
   margin:0 auto 26px;
@@ -217,10 +229,16 @@ tbody tr:hover td{background:#FCFBFB}
 }
 
 @media (max-width: 920px){
+  :root{--sidebar-w:230px}
   .wrap{padding:22px 16px 68px}
   .main-title{padding:30px 22px 24px}
   .main-title h1{font-size:26px}
   .grid2,.grid3{grid-template-columns:1fr}
+}
+@media (max-width: 768px){
+  .sidebar{transform:translateX(calc(var(--sidebar-w)*-1))}
+  .wrap{margin-left:0}
+  .sb-btn,.sb-btn.shifted{left:14px}
 }
 @media (max-width: 720px){
   body{font-size:14px}
@@ -244,21 +262,34 @@ tbody tr:hover td{background:#FCFBFB}
 .chain-sec.vis{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* === HOVER HIGHLIGHT === */
+/* === HOVER === */
 .ibox,.bx{transition:box-shadow .2s,border-color .2s,transform .18s}
 .ibox:hover,.bx:hover{box-shadow:0 4px 16px rgba(227,29,56,.08);border-color:rgba(227,29,56,.25);transform:translateY(-1px)}
 .maint,.scn,.tbl-wrap{transition:box-shadow .2s,border-color .2s}
 .maint:hover,.scn:hover{box-shadow:0 4px 16px rgba(0,0,0,.05);border-color:rgba(0,0,0,.12)}
 .tbl-wrap:hover{box-shadow:0 4px 16px rgba(0,0,0,.05)}
-table.dt tbody tr{transition:background .12s}
-table.dt tbody tr:hover{background:var(--drb-red-soft)}
+table tbody tr{transition:background .12s}
+table tbody tr:hover{background:var(--drb-red-soft)}
+.example{transition:box-shadow .2s}
 .example:hover{box-shadow:0 4px 16px rgba(227,29,56,.08)}
+.section{transition:box-shadow .2s}
+.section:hover{box-shadow:0 12px 36px rgba(24,29,35,.07)}
 
 </style>
 </head>
 <body>
-<div class="ci-band"><span></span><span></span><span></span><span></span><span></span></div>
-<div class="wrap">
+<button class="sb-btn shifted" onclick="togSB()">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<aside class="sidebar" id="sb">
+  <div class="sidebar-hd"><div><div class="sidebar-logo">DRB <span>C2B</span></div><div class="sidebar-sub">Chain to Belt 전환 프로젝트</div></div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-grp"><div class="nav-grp-t">1차 보고</div><a class="nav-i" href="index.html"><div class="nav-dot"></div>C2B 요약 분석</a></div>
+    <div class="nav-grp"><div class="nav-grp-t">전환 검토</div><a class="nav-i" href="C2B_P2.html"><div class="nav-dot"></div>Chain → Belt 전환 단계</a></div>
+    <div class="nav-grp"><div class="nav-grp-t">체인 규격</div><a class="nav-i active" href="C2B_P3.html"><div class="nav-dot"></div>산업용 체인 분류 및 규격</a></div>
+  </nav>
+</aside>
+<div class="wrap" id="mn">
 
 <div class="main-title">
   <h1>산업용 체인 분류 및 규격</h1>
@@ -274,8 +305,8 @@ table.dt tbody tr:hover{background:var(--drb-red-soft)}
   <div class="tab-btn" onclick="showTab('marine',this)"><div class="tn">해양</div><div class="ts">오프쇼어</div></div>
 </div>
 
-<!-- ==================== 1. 리프체인 ==================== -->
 <div class="chain-sec vis" id="sec-lift">
+<!-- ==================== 1. 리프체인 ==================== -->
 <div class="section s1">
   <div class="section-head">
     <div class="section-num">1</div>
@@ -418,7 +449,6 @@ table.dt tbody tr:hover{background:var(--drb-red-soft)}
   </div>
 </div>
 
-<!-- ==================== END ROLLER ==================== -->
 </div><!-- /sec-roller -->
 
 <div class="chain-sec" id="sec-conv">
@@ -482,7 +512,6 @@ table.dt tbody tr:hover{background:var(--drb-red-soft)}
 </div>
 
 
-<!-- ==================== END CONV ==================== -->
 </div><!-- /sec-conv -->
 
 <div class="chain-sec" id="sec-agri">
@@ -569,7 +598,6 @@ table.dt tbody tr:hover{background:var(--drb-red-soft)}
 </div>
 
 
-<!-- ==================== END AGRI ==================== -->
 </div><!-- /sec-agri -->
 
 <div class="chain-sec" id="sec-mine">
@@ -657,7 +685,6 @@ table.dt tbody tr:hover{background:var(--drb-red-soft)}
 </div>
 
 
-<!-- ==================== END MINE ==================== -->
 </div><!-- /sec-mine -->
 
 <div class="chain-sec" id="sec-marine">
@@ -752,7 +779,9 @@ table.dt tbody tr:hover{background:var(--drb-red-soft)}
 </div>
 
 </div>
+
 <script>
+function togSB(){var s=document.getElementById('sb'),m=document.getElementById('mn'),b=document.querySelector('.sb-btn');s.classList.toggle('closed');m.classList.toggle('exp');b.classList.toggle('shifted')}
 function showTab(id,el){
   document.querySelectorAll('.chain-sec').forEach(function(s){s.classList.remove('vis')});
   document.getElementById('sec-'+id).classList.add('vis');
