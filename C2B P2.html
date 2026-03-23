@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chain → Belt 전환 검토단계 및 필요 요소 분석</title>
+<link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+
+:root{
+  --drb-red:#E31D38;
+  --drb-red-deep:#B7182E;
+  --drb-red-soft:#FCEBED;
+  --drb-gray:#706F72;
+  --drb-gray-deep:#4E4D50;
+  --drb-gray-soft:#F3F3F2;
+  --drb-light:#C9CBCF;
+  --drb-silver:#B3B6BA;
+  --drb-gold:#8C7750;
+  --drb-gold-soft:#F5F0E6;
+  --bg:#F7F6F4;
+  --card:#FFFFFF;
+  --text:#202327;
+  --text2:#505861;
+  --text3:#7E858D;
+  --border:#E1E4E8;
+  --shadow:0 10px 28px rgba(24, 29, 35, .05);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Pretendard',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  background:linear-gradient(180deg,#F8F7F5 0%,#F4F3F1 100%);
+  color:var(--text);
+  line-height:1.78;
+  font-size:15px;
+  word-break:keep-all;
+  overflow-wrap:anywhere;
+}
+.ci-band{
+  position:sticky; top:0; z-index:30;
+  height:8px; display:grid;
+  grid-template-columns:1.5fr 1.5fr 1fr 1fr 1fr;
+  box-shadow:0 1px 0 rgba(0,0,0,.04);
+}
+.ci-band span:nth-child(1){background:var(--drb-red)}
+.ci-band span:nth-child(2){background:var(--drb-gray)}
+.ci-band span:nth-child(3){background:var(--drb-light)}
+.ci-band span:nth-child(4){background:var(--drb-silver)}
+.ci-band span:nth-child(5){background:var(--drb-gold)}
+.wrap{max-width:1120px;margin:0 auto;padding:26px 20px 72px}
+.main-title{
+  text-align:center;
+  margin:0 auto 26px;
+  padding:36px 28px 28px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:22px;
+  box-shadow:var(--shadow);
+}
+.main-title::before{
+  content:"DRB Chain to Belt Review";
+  display:inline-block;
+  padding:5px 10px;
+  border-radius:999px;
+  background:var(--drb-red-soft);
+  color:var(--drb-red-deep);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
+.main-title h1{font-size:30px;font-weight:800;letter-spacing:-.04em;line-height:1.28;margin-bottom:8px}
+.main-title p{font-size:13px;color:var(--text3);line-height:1.65}
+.section{
+  background:var(--card);
+  border-radius:20px;
+  margin-bottom:22px;
+  border:1px solid var(--border);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.section-head{
+  padding:22px 24px 16px;
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  border-bottom:1px solid rgba(0,0,0,.04);
+}
+.section-num{
+  width:42px;height:42px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:800;flex-shrink:0;color:#fff;
+}
+.section-info{flex:1;min-width:0}
+.section-info h2{font-size:20px;font-weight:800;letter-spacing:-.03em;line-height:1.4}
+.section-info .sub{font-size:12px;margin-top:4px;line-height:1.6}
+.section-body{padding:18px 24px 24px}
+.s-main .section-head{background:linear-gradient(180deg,#FFF 0%, #FFF 30%, #FCEBED 100%)}
+.s-main .section-num{background:var(--drb-red)}
+.s-main .section-info .sub{color:var(--drb-red-deep)}
+.s-act1 .section-head{background:linear-gradient(180deg,#FFF 0%, #FFF 30%, #F3F3F2 100%)}
+.s-act1 .section-num{background:var(--drb-gray)}
+.s-act1 .section-info .sub{color:var(--drb-gray-deep)}
+.s-act2 .section-head{background:linear-gradient(180deg,#FFF 0%, #FFF 30%, #F5F0E6 100%)}
+.s-act2 .section-num{background:var(--drb-gold)}
+.s-act2 .section-info .sub{color:var(--drb-gold)}
+.s-future .section-head{background:linear-gradient(180deg,#FFF 0%, #FFF 30%, #FCEBED 100%)}
+.s-future .section-num{background:var(--drb-red-deep)}
+.s-future .section-info .sub{color:var(--drb-red-deep)}
+
+.step-table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  table-layout:fixed;
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  background:#fff;
+}
+.step-table th,.step-table td{
+  padding:15px 16px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+  font-size:13px;
+  line-height:1.72;
+  word-break:keep-all;
+  overflow-wrap:anywhere;
+}
+.step-table tr:last-child td{border-bottom:none}
+.step-table th{
+  font-size:11px;
+  font-weight:800;
+  color:var(--text3);
+  text-align:center;
+  letter-spacing:.04em;
+  background:#FAFAFA;
+  border-bottom:2px solid var(--drb-red);
+}
+.step-table td:nth-child(1),
+.step-table td:nth-child(4){text-align:center}
+.step-table tbody tr:hover td{background:#FCFBFB}
+.step-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:10px;
+  font-size:13px;font-weight:800;color:#fff;background:var(--drb-red);
+  margin:0 auto 8px;
+}
+.step-name{display:block;font-weight:800;font-size:14px;line-height:1.55}
+.step-note{font-size:11px;color:var(--text3);line-height:1.55}
+.check-item{position:relative;padding-left:14px;margin-bottom:4px;text-align:left}
+.check-item::before{content:"•";position:absolute;left:0;top:0;color:var(--drb-red);font-weight:900}
+
+.s-act1 .section-body,
+.s-act2 .section-body{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.action-card{
+  padding:18px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:#fff;
+  min-height:100%;
+  box-shadow:0 4px 14px rgba(24,29,35,.03);
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+.action-card:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(24,29,35,.06)}
+.action-card:last-child{margin-bottom:0}
+.action-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.action-badge{
+  width:26px;height:26px;border-radius:999px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;flex-shrink:0;
+  background:var(--drb-red-soft);color:var(--drb-red-deep);
+}
+.s-act1 .action-badge{background:var(--drb-gray-soft);color:var(--drb-gray-deep)}
+.s-act2 .action-badge{background:var(--drb-gold-soft);color:var(--drb-gold)}
+.action-head h3{font-size:15px;font-weight:800;line-height:1.5;flex:1;min-width:180px}
+.action-body{font-size:13px;color:var(--text2);line-height:1.8;padding-left:36px}
+.action-body b{color:var(--text)}
+.action-tag{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:4px 9px;border-radius:999px;
+  font-size:10px;font-weight:800;line-height:1.2;
+  margin-left:auto;white-space:nowrap;
+}
+.tag-done{background:#E5F4EE;color:#11624F}
+.tag-plan{background:var(--drb-gold-soft);color:var(--drb-gold)}
+
+.flow-wrap{
+  padding:20px;
+  background:linear-gradient(180deg,#FFF 0%, #FCEBED 100%);
+  border-radius:16px;
+  border:1px solid #F2D5DB;
+  margin-bottom:14px;
+}
+.flow-steps{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:10px;
+  align-items:stretch;
+}
+.flow-box{
+  padding:14px 12px;
+  border-radius:14px;
+  font-size:12px;
+  font-weight:700;
+  background:#fff;
+  border:1px solid #F2D5DB;
+  color:var(--drb-red-deep);
+  text-align:center;
+  line-height:1.55;
+  min-height:74px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.flow-arr{display:none}
+.note{
+  font-size:13px;color:var(--text2);line-height:1.8;
+  padding:14px 16px;border-radius:14px;
+  background:var(--drb-gray-soft);
+  border-left:4px solid var(--drb-silver);
+}
+.footer{
+  text-align:center;font-size:11px;color:var(--text3);
+  line-height:1.7;margin-top:18px;padding:14px 0 0;
+}
+
+.nowrap{white-space:nowrap}
+
+@media (max-width: 920px){
+  .wrap{padding:22px 16px 64px}
+  .main-title{padding:30px 20px 24px}
+  .main-title h1{font-size:26px}
+  .s-act1 .section-body,.s-act2 .section-body{grid-template-columns:1fr}
+  .flow-steps{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width: 720px){
+  body{font-size:14px}
+  .main-title h1{font-size:22px}
+  .section-head{padding:18px 18px 14px}
+  .section-body{padding:16px 18px 18px}
+  .section-info h2{font-size:18px}
+  .step-table{display:block;overflow-x:auto}
+  .step-table th,.step-table td{min-width:160px}
+  .flow-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+</style>
+</head>
+<body>
+<div class="ci-band"><span></span><span></span><span></span><span></span><span></span></div>
+<div class="wrap">
+
+<div class="main-title">
+  <h1>Chain → Belt 전환 검토단계 및 필요 요소 분석</h1>
+  <p>체인 → 벨트 전환 시 필요한 검토 단계, 실행 과제, 향후 방향을 정리한 문서</p>
+</div>
+
+
+<!-- ==================== 5단계 검토 프로세스 ==================== -->
+<div class="section s-main">
+  <div class="section-head">
+    <div class="section-num">▤</div>
+    <div class="section-info">
+      <h2>체인 → 벨트 전환 시 검토 단계 (5단계)</h2>
+      <div class="sub">기존 체인 사양 파악부터 시제품 최종 확정까지</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <table class="step-table">
+      <thead>
+        <tr>
+          <th style="width:19%">단계</th>
+          <th style="width:37%">확인 내용</th>
+          <th style="width:28%">산출 / 결과물</th>
+          <th style="width:16%">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span class="step-badge">1</span>
+            <span class="step-name">기존 사양 및 운전조건 파악</span>
+          </td>
+          <td>
+            <div class="check-item">기존 체인 종류·규격·피치·하중</div>
+            <div class="check-item">모터출력, 회전수, 토크, 장력</div>
+            <div class="check-item">중심거리, 사용시간 확인</div>
+          </td>
+          <td>기존 체인 사양 및 운전조건 정리</td>
+          <td><div class="step-note">실제 사용조건 파악이 가장 우선</div></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="step-badge">2</span>
+            <span class="step-name">사용 목적 및 환경 검토</span>
+          </td>
+          <td>
+            <div class="check-item">동력전달용 / 동기이송용 / 승강용 구분</div>
+            <div class="check-item">분진·수분·오일 오염도</div>
+            <div class="check-item">충격하중, 실내외 조건 확인</div>
+          </td>
+          <td>전환 가능성 1차 판단 및 적용 재질 방향 설정</td>
+          <td><div class="step-note">용도와 환경에 따라 적용 가능한 벨트 타입이 달라짐</div></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="step-badge">3</span>
+            <span class="step-name">벨트 사양 선정</span>
+          </td>
+          <td>
+            <div class="check-item">타이밍벨트·V벨트·평벨트 등 방식 선정</div>
+            <div class="check-item">전달토크·필요장력·허용장력</div>
+            <div class="check-item">안전율 검토</div>
+          </td>
+          <td>적정 벨트 타입, 폭, 길이, 재질 선정</td>
+          <td><div class="step-note">체인이 하던 성능을 벨트로 구현 가능한지 검증</div></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="step-badge">4</span>
+            <span class="step-name">풀리 및 기구 설계 검토</span>
+          </td>
+          <td>
+            <div class="check-item">풀리 피치·잇수·외경·폭·축경·허브형상</div>
+            <div class="check-item">중심거리, 장력조절 범위</div>
+            <div class="check-item">설치공간, 간섭, 축베어링 하중</div>
+          </td>
+          <td>전용 풀리 사양, 장력 방식, 구조 수정 필요 여부 판단</td>
+          <td><div class="step-note">스프로킷→풀리 전환이 어려운 경우가 많음</div></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="step-badge">5</span>
+            <span class="step-name">시제품 적용 및 최종 확정</span>
+          </td>
+          <td>
+            <div class="check-item">장착 후 소음, 진동, 슬립, 발열</div>
+            <div class="check-item">장력 변화 점검</div>
+            <div class="check-item">최종 규격 확정</div>
+          </td>
+          <td>최종 도면, BOM, 교체 주기, 적용 가능 여부 확정</td>
+          <td><div class="step-note">실제 테스트 후 최종 확정 필요</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<!-- ==================== 실행 과제 1 ==================== -->
+<div class="section s-act1">
+  <div class="section-head">
+    <div class="section-num">1</div>
+    <div class="section-info">
+      <h2>체인 규격 → 벨트로 동일 성능 설계 (1~3단계)</h2>
+      <div class="sub">체인 정보 확보 → 벨트 규격 선정까지의 실행 과제</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="action-card">
+      <div class="action-head">
+        <div class="action-badge">1</div>
+        <h3>경쟁사(Gates) 전환 제안 방식 확인</h3>
+      </div>
+      <div class="action-body">
+        게이츠 프로그램에 <b>체인 정보와 구동 조건을 입력</b>하면 <b>Gates 벨트 규격으로 자동 전환</b>됩니다.<br>
+        경쟁사는 이미 체인 → 벨트 전환 설계 도구를 영업에 활용하고 있습니다.
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-head">
+        <div class="action-badge">2</div>
+        <h3>유니온벨티노(Gates 대리점) 협업</h3>
+        <span class="action-tag tag-done">완료</span>
+      </div>
+      <div class="action-body">
+        프로그램 사용 가능 여부 협의를 완료했습니다.<br>
+        <b>3/10 유니온벨티노 윤태혁님과 미팅 완료</b>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-head">
+        <div class="action-badge">3</div>
+        <h3>DRB 내부 프로그램 개발 검토</h3>
+        <span class="action-tag tag-plan">예정</span>
+      </div>
+      <div class="action-body">
+        자체 전환 프로그램 개발 예정입니다.<br>
+        <b>2025년 2~3분기 개발 착수 예상</b>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ==================== 실행 과제 2 ==================== -->
+<div class="section s-act2">
+  <div class="section-head">
+    <div class="section-num">2</div>
+    <div class="section-info">
+      <h2>체인 스프라켓 → 풀리 전환 (4단계)</h2>
+      <div class="sub">기존 톱니바퀴를 벨트용 풀리로 교체하기 위한 실행 과제</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="action-card">
+      <div class="action-head">
+        <div class="action-badge">1</div>
+        <h3>풀리 제작 가능 업체 조사 — 동일정공</h3>
+        <span class="action-tag tag-done">방문 완료</span>
+      </div>
+      <div class="action-body">
+        <b>동일정공</b> (달성군 구지) — <b>3/12 방문 완료</b><br>
+        DRB 요청 사양 기준으로 풀리 제작 가능 여부를 확인했습니다.
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-head">
+        <div class="action-badge">2</div>
+        <h3>기타 풀리 제작업체</h3>
+        <span class="action-tag tag-plan">필요 시</span>
+      </div>
+      <div class="action-body">
+        한양공업, 반도정밀, 우양정밀 등은 필요 시 추가 방문 예정입니다.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ==================== 향후 방향 ==================== -->
+<div class="section s-future">
+  <div class="section-head">
+    <div class="section-num">★</div>
+    <div class="section-info">
+      <h2>향후 방향</h2>
+      <div class="sub">타겟 산업군 선정부터 실차 테스트까지 전체 로드맵</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="flow-wrap">
+      <div class="flow-steps">
+        <div class="flow-box">타겟<br>산업군 선정</div>
+        <div class="flow-arr">→</div>
+        <div class="flow-box">기존 체인/구동조건<br>DATA 확보</div>
+        <div class="flow-arr">→</div>
+        <div class="flow-box">벨트 대체<br>규격 선정</div>
+        <div class="flow-arr">→</div>
+        <div class="flow-box">풀리<br>제작</div>
+        <div class="flow-arr">→</div>
+        <div class="flow-box">벨트<br>샘플제작</div>
+        <div class="flow-arr">→</div>
+        <div class="flow-box">실차 테스트 후<br>최종 확정</div>
+      </div>
+    </div>
+    <div class="note">
+      우선순위는 타겟 산업군 선정입니다. 산업별 체인 사용 현황과 전환 가능성을 먼저 파악한 뒤 단계적으로 추진하는 흐름이 적절합니다.
+    </div>
+  </div>
+</div>
+
+
+<div class="footer">
+  Chain → Belt 전환 검토 프로세스 · 내부 검토 자료
+</div>
+
+</div>
+</body>
+</html>
