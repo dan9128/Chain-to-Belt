@@ -256,8 +256,8 @@ tbody tr:hover td{background:#FCFBFB}
 .tab-btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.07)}
 .tab-btn .tn{font-size:13px;font-weight:700;color:var(--text)}
 .tab-btn .ts{font-size:10px;color:var(--text3);margin-top:2px}
-.tab-btn.act{border-color:var(--drb-red);background:var(--drb-red-soft);box-shadow:0 4px 14px rgba(227,29,56,.1)}
-.tab-btn.act .tn{color:var(--drb-red-deep)}
+.tab-btn.act{box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.tab-btn.act .tn{font-weight:800}
 .chain-sec{display:none;animation:fadeUp .3s ease}
 .chain-sec.vis{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -274,6 +274,40 @@ table tbody tr:hover{background:var(--drb-red-soft)}
 .example:hover{box-shadow:0 4px 16px rgba(227,29,56,.08)}
 .section{transition:box-shadow .2s}
 .section:hover{box-shadow:0 12px 36px rgba(24,29,35,.07)}
+
+/* === TAB HOVER COLORS === */
+.tab-btn.tab-green:hover{border-color:#4E6B27;background:#EEF6E7;box-shadow:0 6px 18px rgba(78,107,39,.12)}
+.tab-btn.tab-green:hover .tn{color:#4E6B27}
+.tab-btn.tab-green:hover .ts{color:#6B8F3C}
+.tab-btn.tab-green.act{border-color:#4E6B27;background:#EEF6E7;box-shadow:0 4px 14px rgba(78,107,39,.12)}
+.tab-btn.tab-green.act .tn{color:#4E6B27}
+.tab-btn.tab-green.act .ts{color:#6B8F3C}
+
+.tab-btn.tab-blue:hover{border-color:#2E5F93;background:#EEF4FB;box-shadow:0 6px 18px rgba(46,95,147,.12)}
+.tab-btn.tab-blue:hover .tn{color:#2E5F93}
+.tab-btn.tab-blue:hover .ts{color:#4A7EB5}
+.tab-btn.tab-blue.act{border-color:#2E5F93;background:#EEF4FB;box-shadow:0 4px 14px rgba(46,95,147,.12)}
+.tab-btn.tab-blue.act .tn{color:#2E5F93}
+.tab-btn.tab-blue.act .ts{color:#4A7EB5}
+
+.tab-btn.tab-gray:hover{border-color:#706F72;background:#F3F3F2;box-shadow:0 6px 18px rgba(112,111,114,.12)}
+.tab-btn.tab-gray:hover .tn{color:#4E4D50}
+.tab-btn.tab-gray:hover .ts{color:#706F72}
+.tab-btn.tab-gray.act{border-color:#706F72;background:#F3F3F2;box-shadow:0 4px 14px rgba(112,111,114,.12)}
+.tab-btn.tab-gray.act .tn{color:#4E4D50}
+.tab-btn.tab-gray.act .ts{color:#706F72}
+
+/* === CONVERSION LEGEND === */
+.conv-legend{
+  display:flex;align-items:center;justify-content:center;gap:20px;
+  margin-top:14px;padding:10px 0 2px;
+}
+.conv-item{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--text2)}
+.conv-box{width:16px;height:16px;border-radius:5px;flex-shrink:0}
+.conv-box.high{background:#4E6B27}
+.conv-box.mid{background:#2E5F93}
+.conv-box.low{background:#706F72}
+.conv-label{font-size:11px;color:var(--text3);font-weight:600}
 
 </style>
 </head>
@@ -293,19 +327,24 @@ table tbody tr:hover{background:var(--drb-red-soft)}
 
 <div class="main-title">
   <h1>산업용 체인 분류 및 규격</h1>
-  <p>ISO 국제 규격 기준 · kgf는 1 kg 물체를 매달았을 때 걸리는 힘을 의미하며, 1 kN ≈ 102 kgf입니다.</p>
+  <div class="conv-legend" style="margin-top:12px;padding:0">
+    <div class="conv-label">Belt 전환 가능 여부</div>
+    <div class="conv-item"><div class="conv-box high"></div>전환 유망</div>
+    <div class="conv-item"><div class="conv-box mid"></div>전환 가능</div>
+    <div class="conv-item"><div class="conv-box low"></div>전환 불리</div>
+  </div>
 </div>
 
 <div class="tab-bar">
-  <div class="tab-btn act" onclick="showTab('lift',this)"><div class="tn">리프체인</div><div class="ts">승강 · 인양</div></div>
-  <div class="tab-btn" onclick="showTab('roller',this)"><div class="tn">롤러체인</div><div class="ts">동력전달</div></div>
-  <div class="tab-btn" onclick="showTab('conv',this)"><div class="tn">이송용</div><div class="ts">컨베이어</div></div>
-  <div class="tab-btn" onclick="showTab('agri',this)"><div class="tn">농기계용</div><div class="ts">트랙터 · 콤바인</div></div>
-  <div class="tab-btn" onclick="showTab('mine',this)"><div class="tn">광산 · 건설</div><div class="ts">채석 · 탄광</div></div>
-  <div class="tab-btn" onclick="showTab('marine',this)"><div class="tn">해양</div><div class="ts">오프쇼어</div></div>
+  <div class="tab-btn act tab-green" onclick="showTab('roller',this)" data-color="green"><div class="tn">롤러체인</div><div class="ts">동력전달</div></div>
+  <div class="tab-btn tab-green" onclick="showTab('conv',this)" data-color="green"><div class="tn">이송용</div><div class="ts">컨베이어</div></div>
+  <div class="tab-btn tab-blue" onclick="showTab('lift',this)" data-color="blue"><div class="tn">리프체인</div><div class="ts">승강 · 인양</div></div>
+  <div class="tab-btn tab-gray" onclick="showTab('agri',this)" data-color="gray"><div class="tn">농기계용</div><div class="ts">트랙터 · 콤바인</div></div>
+  <div class="tab-btn tab-gray" onclick="showTab('mine',this)" data-color="gray"><div class="tn">광산 · 건설</div><div class="ts">채석 · 탄광</div></div>
+  <div class="tab-btn tab-gray" onclick="showTab('marine',this)" data-color="gray"><div class="tn">해양</div><div class="ts">오프쇼어</div></div>
 </div>
 
-<div class="chain-sec vis" id="sec-lift">
+<div class="chain-sec" id="sec-lift">
 <!-- ==================== 1. 리프체인 ==================== -->
 <div class="section s1">
   <div class="section-head">
@@ -384,7 +423,7 @@ table tbody tr:hover{background:var(--drb-red-soft)}
 </div>
 </div><!-- /sec-lift -->
 
-<div class="chain-sec" id="sec-roller">
+<div class="chain-sec vis" id="sec-roller">
 <!-- ==================== 2. 동력전달용 롤러체인 ==================== -->
 <div class="section s2">
   <div class="section-head">
@@ -775,7 +814,7 @@ table tbody tr:hover{background:var(--drb-red-soft)}
 
 <div class="footer">
   출처: ISO 4347:2015 · ISO 606:2015 · ISO 1275:2006 · ISO 487:1998 · ISO 610:1990 · ISO 3691 · ISO 10823 · ISO 4254<br>
-  인장강도 환산: 1 kN ≈ 102 kgf · 최소 인장강도는 파단 시험 기준값이며 실제 사용 하중과 동일하지 않습니다.
+  ISO 국제 규격 기준 · kgf는 1 kg 물체를 매달았을 때 걸리는 힘을 의미하며, 1 kN ≈ 102 kgf입니다.
 </div>
 
 </div>
