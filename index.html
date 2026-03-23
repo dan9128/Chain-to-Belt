@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DRB C2B — Chain to Belt</title>
+<link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+:root{
+  --drb-red:#E31D38;
+  --drb-red-soft:#FCEBED;
+  --drb-red-deep:#B7182E;
+  --drb-gray:#706F72;
+  --drb-gray-soft:#F3F3F2;
+  --drb-gray-deep:#4E4D50;
+  --drb-light-gray:#C9CBCF;
+  --drb-silver:#B3B6BA;
+  --drb-gold:#8C7750;
+  --drb-gold-soft:#F5F0E6;
+  --bg:#F7F6F4;
+  --card:#FFFFFF;
+  --text:#202327;
+  --text2:#4E555D;
+  --text3:#7F858C;
+  --border:#E1E4E8;
+  --shadow:0 8px 24px rgba(18, 24, 33, .05);
+  --shadow-soft:0 3px 14px rgba(18, 24, 33, .04);
+  --sidebar-w:248px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Pretendard',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  background:linear-gradient(180deg,#F7F6F4 0%,#F5F4F2 100%);
+  color:var(--text);
+  line-height:1.72;
+  font-size:15px;
+  overflow-x:hidden;
+  word-break:keep-all;
+}
+button,input,textarea,select{font:inherit}
+
+a{color:inherit}
+
+.ci-band{
+  position:fixed;
+  top:0;left:0;right:0;
+  height:8px;
+  display:grid;
+  grid-template-columns:1.5fr 1.5fr 1fr 1fr 1fr;
+  z-index:320;
+}
+.ci-band span:nth-child(1){background:var(--drb-red)}
+.ci-band span:nth-child(2){background:var(--drb-gray)}
+.ci-band span:nth-child(3){background:var(--drb-light-gray)}
+.ci-band span:nth-child(4){background:var(--drb-silver)}
+.ci-band span:nth-child(5){background:var(--drb-gold)}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;
+  top:8px;left:0;
+  width:var(--sidebar-w);
+  height:calc(100vh - 8px);
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(10px);
+  border-right:1px solid var(--border);
+  box-shadow:10px 0 28px rgba(32,35,39,.04);
+  z-index:100;
+  transition:transform .3s ease;
+  display:flex;
+  flex-direction:column;
+}
+.sidebar.closed{transform:translateX(calc(var(--sidebar-w)*-1))}
+.sidebar-hd{padding:26px 22px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sidebar-logo{font-size:22px;font-weight:800;color:var(--drb-red);letter-spacing:-.04em;line-height:1.1}
+.sidebar-logo span{color:var(--drb-gray)}
+.sidebar-sub{font-size:11px;color:var(--text3);margin-top:5px;line-height:1.5}
+.sidebar-nav{flex:1;overflow-y:auto;padding:18px 12px 18px}
+.nav-grp{margin-bottom:18px}
+.nav-grp-t{font-size:10px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;padding:0 12px 8px}
+.nav-i{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text2);transition:all .18s ease;user-select:none}
+.nav-i + .nav-i{margin-top:4px}
+.nav-i:hover{background:var(--drb-gray-soft);color:var(--text);transform:translateX(2px)}
+.nav-i.active{background:var(--drb-red-soft);color:var(--drb-red-deep);font-weight:800}
+.nav-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--drb-light-gray)}
+.nav-i.active .nav-dot{background:var(--drb-red)}
+
+/* Toggle */
+.sb-btn{
+  position:fixed;
+  top:22px;left:16px;
+  z-index:220;
+  width:40px;height:40px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(8px);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:left .3s ease, box-shadow .15s ease, transform .15s ease;
+  box-shadow:var(--shadow-soft);
+}
+.sb-btn:hover{box-shadow:0 6px 18px rgba(32,35,39,.1);transform:translateY(-1px)}
+.sb-btn.shifted{left:calc(var(--sidebar-w) + 16px)}
+.sb-btn svg{width:18px;height:18px;stroke:var(--drb-gray);stroke-width:2;fill:none;stroke-linecap:round}
+
+/* MAIN */
+.main{margin-left:var(--sidebar-w);transition:margin-left .3s ease;min-height:100vh;padding:38px 36px 98px;max-width:1240px}
+.main.exp{margin-left:0}
+.page{display:none}.page.vis{display:block}
+.pg-t{text-align:center;margin:0 auto 32px;padding-top:14px;max-width:820px}
+.pg-t h2{font-size:30px;font-weight:800;letter-spacing:-.04em;line-height:1.26}
+.pg-t p{font-size:13px;color:var(--text3);margin-top:8px;line-height:1.6}
+
+/* SECTION CARD */
+.sec{background:var(--card);border-radius:18px;margin-bottom:24px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow)}
+.sec-h{padding:22px 24px 10px;display:flex;align-items:center;gap:14px}
+.sec-n{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;flex-shrink:0;background:var(--drb-red);color:#fff}
+.sec-n.gray{background:var(--drb-gray)}
+.sec-n.gold{background:var(--drb-gold);color:#fff}
+.sec-i h3{font-size:19px;font-weight:800;letter-spacing:-.03em;line-height:1.35}
+.sec-i .sub{font-size:12px;margin-top:4px;color:var(--text3);line-height:1.6}
+.sec-b{padding:0 24px 24px}
+
+/* Generic blocks */
+.bx,.ac,.tbl-wrap,.dir-card,.kv,.mt,.scn,.exmp{transition:box-shadow .18s ease,border-color .18s ease,transform .18s ease}
+.bx:hover,.ac:hover,.tbl-wrap:hover,.dir-card:hover,.kv:hover,.mt:hover,.scn:hover,.exmp:hover{box-shadow:0 8px 22px rgba(227,29,56,.05);border-color:#E8C8CD;transform:translateY(-1px)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.bx{padding:16px 18px;border-radius:14px;border:1px solid var(--border);background:#FBFBFB;cursor:default}
+.bx .lb{font-size:11px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;line-height:1.4}
+.bx .vl{font-size:16px;font-weight:800;line-height:1.45}
+.bx .dt{font-size:13px;color:var(--text2);margin-top:5px;line-height:1.72}
+.bx.full{grid-column:1/-1}
+
+/* Table */
+.tbl-wrap{border-radius:14px;border:1px solid var(--border);overflow:hidden;background:#FBFBFB;margin-bottom:14px}
+.tbl-t{font-size:11px;font-weight:800;color:var(--text3);padding:13px 16px 8px;text-transform:uppercase;letter-spacing:.05em;line-height:1.5}
+table.dt{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+table.dt th,table.dt td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:middle;line-height:1.7;word-break:keep-all;overflow-wrap:anywhere}
+table.dt th{background:#FAFAFA;font-weight:800;font-size:11px;color:var(--text3);border-bottom:2px solid var(--drb-red);text-align:center}
+table.dt td{text-align:left;background:#fff}
+table.dt tr:last-child td{border-bottom:none}
+table.dt tbody tr{transition:background .12s ease}
+table.dt tbody tr:hover td{background:var(--drb-red-soft)}
+.mono{font-family:'SF Mono','Fira Code',monospace;font-size:12px;font-weight:700}
+.r{text-align:right !important;font-weight:800}
+.center{text-align:center !important}
+
+/* Tags */
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.tg{padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;background:var(--drb-red-soft);color:var(--drb-red-deep);line-height:1.4}
+
+/* Example */
+.exmp{border-radius:14px;padding:16px 18px;margin-bottom:14px;border:1px solid #F1D8DC;border-left:4px solid var(--drb-red);background:var(--drb-red-soft)}
+.exmp .et{font-size:14px;font-weight:800;margin-bottom:6px;line-height:1.5}
+.exmp .eb{font-size:13px;line-height:1.8;color:var(--text2)}
+.exmp b{color:var(--text)}
+
+/* Maintenance */
+.mt,.scn{border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-bottom:14px;background:#fff}
+.mt-t,.scn-t{font-size:11px;font-weight:800;padding:13px 15px 10px;line-height:1.5;letter-spacing:.04em}
+.mt-t{background:var(--drb-gray-soft);color:var(--text3)}
+.scn-t{background:var(--drb-gold-soft);color:var(--drb-gold)}
+.mt-l,.scn-l{padding:8px 15px 12px}
+.mt-i{display:flex;gap:10px;padding:7px 0;font-size:13px;line-height:1.7;align-items:flex-start}
+.mt-i .mn{flex-shrink:0;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;background:var(--drb-red-soft);color:var(--drb-red-deep);font-weight:800;margin-top:2px}
+.scn-i{padding:9px 0;font-size:13px;line-height:1.8;border-bottom:1px dashed var(--border)}
+.scn-i:last-child{border-bottom:none}
+.scn-i b{color:var(--text)}
+.st{display:inline-block;padding:3px 7px;border-radius:999px;font-size:10px;font-weight:800;margin-right:4px;line-height:1.3}
+.st.p{background:#E3F4ED;color:#0D624F}
+.st.c{background:#FCEBEB;color:#8A2323}
+.st.n{background:var(--drb-gold-soft);color:var(--drb-gold)}
+
+/* Note */
+.nt{font-size:13px;color:var(--text2);line-height:1.8;padding:14px 16px;border-radius:14px;background:var(--drb-gray-soft);border-left:4px solid var(--drb-silver);margin-bottom:14px}
+
+/* Action card */
+.ac{padding:16px 18px;border-radius:14px;border:1px solid var(--border);margin-bottom:12px;background:#fff}
+.ac:last-child{margin-bottom:0}
+.ac-h{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.ac-b{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;background:var(--drb-red-soft);color:var(--drb-red-deep)}
+.ac-h h4{font-size:15px;font-weight:800;line-height:1.45}
+.ac-d{font-size:13px;color:var(--text2);line-height:1.8;padding-left:34px}
+.ac-d b{color:var(--text)}
+.atag{display:inline-block;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:800;line-height:1.3}
+.atag.done{background:#E3F4ED;color:#0D624F}
+.atag.plan{background:var(--drb-gold-soft);color:var(--drb-gold)}
+
+/* Step table */
+.stbl{width:100%;border-collapse:separate;border-spacing:0;margin-bottom:4px;background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.stbl th,.stbl td{padding:14px 14px;vertical-align:middle;border-bottom:1px solid var(--border);line-height:1.7;word-break:keep-all;overflow-wrap:anywhere}
+.stbl th{font-size:11px;font-weight:800;color:var(--text3);text-align:center;background:#FAFAFA;border-bottom:2px solid var(--drb-red)}
+.stbl td{font-size:13px}
+.stbl tr:last-child td{border-bottom:none}
+.stbl tbody tr{transition:background .12s ease}
+.stbl tbody tr:hover td{background:var(--drb-red-soft)}
+.sb{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;font-size:13px;font-weight:800;color:#fff;background:var(--drb-red);margin-right:8px;flex-shrink:0;vertical-align:middle}
+.sn{font-weight:800;font-size:14px;line-height:1.5}
+.snt{font-size:11px;color:var(--text3);margin-top:4px;line-height:1.5}
+.ci{position:relative;padding-left:14px;margin-bottom:2px}
+.ci::before{content:'·';position:absolute;left:0;font-weight:900;color:var(--drb-red)}
+
+/* Flow */
+.flw{padding:20px;background:var(--drb-red-soft);border-radius:14px;border:1px solid #F1D8DC;margin-bottom:14px}
+.fl-s{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.fl-b{padding:11px 14px;border-radius:12px;font-size:12px;font-weight:700;background:#fff;border:1px solid #F1D8DC;color:var(--drb-red-deep);text-align:center;min-width:98px;line-height:1.45}
+.fl-a{font-size:16px;color:var(--drb-red);flex-shrink:0;font-weight:800}
+
+/* Chain tabs */
+.ctabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.ctab{flex:1;min-width:120px;padding:14px 12px;border-radius:14px;border:1.5px solid var(--border);background:#fff;cursor:pointer;text-align:center;user-select:none;transition:all .18s ease}
+.ctab:hover{transform:translateY(-2px);box-shadow:var(--shadow-soft)}
+.ctab.act{border-color:var(--drb-red);background:var(--drb-red-soft)}
+.ctab .cn{font-size:13px;font-weight:800;color:var(--text);line-height:1.45}
+.ctab.act .cn{color:var(--drb-red-deep)}
+.ctab .cs{font-size:10px;color:var(--text3);margin-top:3px;line-height:1.4}
+.cpan{display:none;animation:fi .24s ease}.cpan.vis{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* C2B specifics */
+.kv-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.kv{flex:1;min-width:160px;padding:16px 14px;border-radius:14px;background:#FBFBFB;border:1px solid var(--border);text-align:center}
+.kv .kn{font-size:11px;color:var(--text3);font-weight:700;margin-bottom:5px;line-height:1.5}
+.kv .kvl{font-size:21px;font-weight:800;color:var(--drb-red);line-height:1.3}
+.kv .kd{font-size:11px;color:var(--text2);margin-top:4px;line-height:1.6}
+.app-tbl,.comp-tbl{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+.app-tbl th,.app-tbl td,.comp-tbl th,.comp-tbl td{padding:12px 12px;border-bottom:1px solid var(--border);vertical-align:middle;word-break:keep-all;overflow-wrap:anywhere;line-height:1.7}
+.app-tbl th,.comp-tbl th{text-align:center;font-weight:800;font-size:11px;color:var(--text3);border-bottom:2px solid var(--drb-red);background:#FAFAFA}
+.app-tbl td,.comp-tbl td{background:#fff}
+.app-tbl tbody tr:hover td,.comp-tbl tbody tr:hover td{background:var(--drb-red-soft)}
+.app-tbl td:nth-child(1),.app-tbl td:nth-child(3),.comp-tbl td:nth-child(1){text-align:center}
+.app-tbl td:nth-child(2),.comp-tbl td:nth-child(2),.comp-tbl td:nth-child(3){text-align:left}
+.lv{display:inline-block;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:800;line-height:1.3}
+.lv.h{background:#E3F4ED;color:#0D624F}
+.lv.m{background:var(--drb-gold-soft);color:var(--drb-gold)}
+.lv.l{background:#FCEBEB;color:#8A2323}
+.dir-card{padding:16px 18px;border-radius:14px;border:1px solid var(--border);margin-bottom:10px;background:#fff}
+.dir-card h4{font-size:15px;font-weight:800;color:var(--drb-red-deep);margin-bottom:6px;line-height:1.5}
+.dir-card p{font-size:13px;color:var(--text2);line-height:1.8}
+.mission{text-align:center;padding:26px 22px;margin-bottom:18px;background:linear-gradient(135deg,var(--drb-red),var(--drb-red-deep));border-radius:18px;color:#fff;box-shadow:0 12px 28px rgba(227,29,56,.18)}
+.mission p{font-size:11px;opacity:.82;margin-bottom:5px;text-transform:uppercase;letter-spacing:.12em;line-height:1.4}
+.mission h3{font-size:24px;font-weight:800;line-height:1.45;letter-spacing:-.03em}
+
+.footer{text-align:center;font-size:11px;color:var(--text3);line-height:1.7;margin-top:22px;padding:14px;border-top:1px solid var(--border)}
+.footer b{color:var(--drb-red)}
+
+/* Inline edit */
+.fab-wrap{position:fixed;left:18px;bottom:18px;z-index:260;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.fab-btn{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:0 14px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,.96);backdrop-filter:blur(10px);box-shadow:var(--shadow-soft);cursor:pointer;color:var(--text);font-weight:800;transition:all .18s ease}
+.fab-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(32,35,39,.12)}
+.fab-btn.primary{background:var(--drb-red);border-color:var(--drb-red);color:#fff}
+.fab-btn.secondary{display:none}
+body.edit-on .fab-btn.secondary{display:inline-flex}
+.fab-btn .dot{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.8}
+.editable-live{outline:2px dashed rgba(227,29,56,.35);outline-offset:3px;background:rgba(252,235,237,.55);border-radius:6px}
+.toast{position:fixed;left:18px;bottom:170px;z-index:270;background:rgba(32,35,39,.94);color:#fff;padding:10px 12px;border-radius:12px;font-size:12px;line-height:1.5;opacity:0;transform:translateY(6px);pointer-events:none;transition:all .2s ease;max-width:260px;box-shadow:0 8px 22px rgba(0,0,0,.18)}
+.toast.show{opacity:1;transform:translateY(0)}
+
+@media (max-width: 1100px){
+  .main{padding:34px 24px 98px}
+  .g2{grid-template-columns:1fr}
+}
+@media (max-width: 860px){
+  :root{--sidebar-w:230px}
+  .pg-t h2{font-size:26px}
+  .mission h3{font-size:21px}
+  .kv-bar{flex-direction:column}
+}
+@media (max-width: 680px){
+  .sidebar{transform:translateX(calc(var(--sidebar-w)*-1))}
+  .sidebar.closed{transform:translateX(calc(var(--sidebar-w)*-1))}
+  .main,.main.exp{margin-left:0;padding:28px 16px 98px}
+  .sb-btn,.sb-btn.shifted{left:14px}
+  .pg-t{padding-top:26px}
+  .pg-t h2{font-size:23px}
+  .sec-h,.sec-b{padding-left:16px;padding-right:16px}
+  .sec-h{padding-top:18px;padding-bottom:10px}
+  .ctab{min-width:calc(50% - 4px)}
+  table.dt,.app-tbl,.comp-tbl,.stbl{font-size:12px}
+  .fab-wrap{left:14px;bottom:14px}
+}
+</style>
+</head>
+<body>
+<div class="ci-band" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+
+<button class="sb-btn shifted" onclick="togSB()">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+
+<aside class="sidebar" id="sb">
+  <div class="sidebar-hd">
+    <div><div class="sidebar-logo">DRB <span>C2B</span></div><div class="sidebar-sub">Chain to Belt 전환 프로젝트</div></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-grp">
+      <div class="nav-grp-t">1차 보고</div>
+      <div class="nav-i active" onclick="go('c2b')"><div class="nav-dot"></div>C2B 요약 분석</div>
+    </div>
+    <div class="nav-grp">
+      <div class="nav-grp-t">전환 검토</div>
+      <div class="nav-i" onclick="location.href='C2B_P2.html'"><div class="nav-dot"></div>Chain → Belt 전환 단계</div>
+    </div>
+    <div class="nav-grp">
+      <div class="nav-grp-t">체인 규격</div>
+      <div class="nav-i" onclick="location.href='C2B_P3.html'"><div class="nav-dot"></div>산업용 체인 분류 및 규격</div>
+    </div>
+  </nav>
+</aside>
+
+<div class="main" id="mn">
+
+<!-- ======================== PAGE: C2B 요약 ======================== -->
+<div class="page vis" id="pg-c2b">
+  <div class="pg-t"><h2>C2B 요약 분석</h2><p>목표 · 시장현황 · 어플리케이션 · 경쟁사 · 최종방향</p></div>
+
+  <div class="mission"><p>Mission</p><h3>세상의 모든 체인을 벨트로 전환한다</h3></div>
+
+  <!-- 시장현황 -->
+  <div class="sec"><div class="sec-h"><div class="sec-n">1</div><div class="sec-i"><h3>체인 시장 현황</h3><div class="sub">국내 산업용 체인 시장 2024~2025년 추정</div></div></div>
+    <div class="sec-b">
+      <div class="kv-bar">
+        <div class="kv"><div class="kn">국내 전체시장</div><div class="kvl">1,300~1,800억</div><div class="kd">국산+수입 포함 (유통 총량)</div></div>
+        <div class="kv"><div class="kn">수입·유통 시장</div><div class="kvl">690~1,000억</div><div class="kd">RENOLD, TSUBAKI, iwis, Donghua 외</div></div>
+        <div class="kv"><div class="kn">국내 생산 비중</div><div class="kvl">70~95%</div><div class="kd">가정치(범위)</div></div>
+      </div>
+      <div class="tbl-wrap"><div class="tbl-t">국내 타입별 비중 (범위)</div>
+        <table class="dt"><tr><th>타입</th><th>비중</th><th>비고</th></tr>
+        <tr><td>롤러체인</td><td class="r">55~62%</td><td>동력전달 중심</td></tr>
+        <tr><td>리프트체인</td><td class="r">18~24%</td><td>지게차·승강</td></tr>
+        <tr><td>컨베어체인</td><td class="r">10~15%</td><td>이송·물류</td></tr>
+        <tr><td>기타(특수/농기계)</td><td class="r">6~10%</td><td></td></tr></table></div>
+    </div>
+  </div>
+
+  <!-- 체인구조 -->
+  <div class="sec"><div class="sec-h"><div class="sec-n gray">2</div><div class="sec-i"><h3>체인구조</h3><div class="sub">핵심: 관절부(핀–부시)가 체인의 Pain을 만든다</div></div></div>
+    <div class="sec-b">
+      <div class="g2">
+        <div class="bx"><div class="lb">구성요소</div><div class="vl">플레이트 + 롤러 + 부시 + 핀</div><div class="dt">링크(Link)를 만들고, 링크가 다수 연결된 구조</div></div>
+        <div class="bx"><div class="lb">Pain Point</div><div class="vl">관절부(핀–부시) = 소음·마모·정비</div><div class="dt">벨트(치형+코드)로 전환 시 Pain 제거 가능</div></div>
+      </div>
+      <div class="nt">핵심가치: <b>무윤활 · 저소음 · 유지보수 절감 · TCO(총소유비용) 전환</b><br>전환판단: 가치(고객문제) + 적용조건(설계/환경) + 리스크(안전/규제)</div>
+    </div>
+  </div>
+
+  <!-- 어플리케이션 -->
+  <div class="sec"><div class="sec-h"><div class="sec-n">3</div><div class="sec-i"><h3>어플리케이션 종류 & 접근가능성</h3><div class="sub">11개 분야별 벨트 전환 가능성 평가</div></div></div>
+    <div class="sec-b">
+      <div class="tbl-wrap" style="max-height:420px;overflow-y:auto">
+        <table class="app-tbl"><thead><tr><th>체인 종류</th><th>어플리케이션</th><th>전환 가능성</th></tr></thead>
+        <tbody>
+          <tr><td><b>동력전달</b></td><td>모터–축 동력전달, 감속기·펌프·팬</td><td><span class="lv h">중~높음</span></td></tr>
+          <tr><td><b>식품·음료</b></td><td>위생·세정 라인, 포장기 동기 구동</td><td><span class="lv h">중~높음(유망)</span></td></tr>
+          <tr><td><b>이송·물류</b></td><td>물류·조립 라인, 팔레트/제품 이송</td><td><span class="lv m">중</span></td></tr>
+          <tr><td><b>자동차·이륜</b></td><td>엔진 보조 구동, 모터사이클</td><td><span class="lv m">중</span></td></tr>
+          <tr><td><b>지게차·창고</b></td><td>마스트 리프트, 승강/구동</td><td><span class="lv m">중(조건부)</span></td></tr>
+          <tr><td><b>일반 산업</b></td><td>일반 산업 설비 표준 구동</td><td><span class="lv m">중</span></td></tr>
+          <tr><td><b>농기계</b></td><td>콤바인·사료/곡물 이송</td><td><span class="lv l">낮음~조건부</span></td></tr>
+          <tr><td><b>건설·광산</b></td><td>광산·건설 현장 이송·구동</td><td><span class="lv l">낮음</span></td></tr>
+          <tr><td><b>철강·시멘트</b></td><td>고온·분진 플랜트 연속 운전</td><td><span class="lv l">낮음</span></td></tr>
+          <tr><td><b>항만·해양</b></td><td>항만·해양 장비 구동/이송</td><td><span class="lv l">낮음</span></td></tr>
+          <tr><td><b>승강·인양</b></td><td>호이스트·크레인 승강</td><td><span class="lv l">낮음(매우 높은 난이도)</span></td></tr>
+        </tbody></table>
+      </div>
+      <div class="g2">
+        <div class="bx" style="border-left:3px solid #0F6E56"><div class="lb">가능 트리거</div><div class="dt"><b>윤활문제</b> — 무윤활 가치가 돈이 됨<br><b>소음문제</b> — 저소음이 구매 사유<br><b>정비 어려움</b> — 접근 곤란·인력 부족<br><b>TCO 관점</b> — 다운타임·교체비용 KPI</div></div>
+        <div class="bx" style="border-left:3px solid var(--drb-red)"><div class="lb">불가능/어려운 리스크</div><div class="dt"><b>안전부품</b> — 동등 이상 안전 입증 필요<br><b>극충격/역토크</b> — 치형 파손·치탈 위험<br><b>품질관리</b> — 정렬·장력 미관리 시 클레임<br><b>고온/강오염</b> — 재질 열화·수명 예측이 어려움</div></div>
+      </div>
+      <div class="tbl-wrap"><div class="tbl-t">C2B 검토 시장 현황</div>
+        <table class="dt"><tr><th>시장</th><th>상태</th><th>가능 이유</th><th>어려운 이유</th></tr>
+        <tr><td><b>지게차 체인</b></td><td><span class="lv h">진행중</span></td><td>무윤활·저소음·정비 절감</td><td>안전/인증/책임 장벽</td></tr>
+        <tr><td><b>자전거 체인</b></td><td><span class="lv m">시장확인</span></td><td>관리 최소·정숙·무윤활</td><td>Gates 독점 구조, 비용 상승</td></tr>
+        <tr><td><b>추가 목표시장</b></td><td><span class="lv l">탐색중</span></td><td></td><td></td></tr></table></div>
+    </div>
+  </div>
+
+  <!-- 경쟁사 -->
+  <div class="sec"><div class="sec-h"><div class="sec-n gray">4</div><div class="sec-i"><h3>경쟁사 & 체인대체 품목</h3><div class="sub">상위 3사(Gates, Continental, Megadyne)를 목표 경쟁사로 설정</div></div></div>
+    <div class="sec-b">
+      <div class="tbl-wrap"><table class="comp-tbl"><tr><th>업체</th><th>대표 품목</th><th>포지셔닝</th></tr>
+        <tr><td><b>Gates</b></td><td>Poly Chain GT Carbon</td><td>고토크 동기벨트로 체인 대체 — 윤활/유지보수 절감 메시지 강함</td></tr>
+        <tr><td><b>Continental</b></td><td>Synchrochain Carbon</td><td>체인 대체·고부하 시장 공략 — 수명·신뢰성·저소음</td></tr>
+        <tr><td><b>Megadyne</b></td><td>MEGASYNC Titanium</td><td>체인 대체 — 저소음·무윤활·고토크</td></tr>
+        <tr><td>Mitsuboshi</td><td>Giga Torque GX</td><td>일본 중심 고부하 동기벨트 (간접 대체)</td></tr>
+        <tr><td>BANDO</td><td>Synchro-Link High Power</td><td>고출력 동기벨트 (간접 메시지)</td></tr>
+        <tr><td>Dayco</td><td>HT Power Carbon</td><td>고성능 라인업 (시장별 상이)</td></tr></table></div>
+    </div>
+  </div>
+
+  <!-- 최종방향 -->
+  <div class="sec"><div class="sec-h"><div class="sec-n gold">5</div><div class="sec-i"><h3>최종 방향</h3><div class="sub">체인시장 → 벨트시장 전환, 경쟁사 접근시장 → DRB 접근</div></div></div>
+    <div class="sec-b">
+      <div class="dir-card"><h4>1) 체인시장 → 벨트시장 전환</h4><p>체인의 고질 Pain(윤활·소음·정비 부담)을 벨트로 제거하는 전환 시장을 만든다</p></div>
+      <div class="dir-card"><h4>2) 경쟁사 접근시장 → DRB 접근</h4><p>경쟁사가 이미 접근하는 체인 대체 구간 중 성공확률이 높은 구간을 DRB가 재정의해 침투</p></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Belt and Chain pages moved to separate files -->
+</div>
+
+<script>
+function togSB(){
+  const s=document.getElementById('sb'),m=document.getElementById('mn'),b=document.querySelector('.sb-btn');
+  s.classList.toggle('closed');
+  m.classList.toggle('exp');
+  b.classList.toggle('shifted');
+}
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('vis'));
+  document.getElementById('pg-'+id).classList.add('vis');
+  document.querySelectorAll('.nav-i').forEach(n=>n.classList.remove('active'));
+  if(event && event.currentTarget) event.currentTarget.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function sC(id,el){
+  document.querySelectorAll('.cpan').forEach(p=>p.classList.remove('vis'));
+  document.getElementById('c-'+id).classList.add('vis');
+  document.querySelectorAll('.ctab').forEach(t=>t.classList.remove('act'));
+  el.classList.add('act');
+}
+
+const EDIT_KEY='drb-c2b-inline-edit-v2';
+const editableSelector=[
+  '.sidebar-sub','.nav-grp-t','.nav-i',
+  '.pg-t h2','.pg-t p','.mission p','.mission h3',
+  '.sec-i h3','.sec-i .sub','.bx .lb','.bx .vl','.bx .dt',
+  '.tbl-t','table th','table td','.nt','.dir-card h4','.dir-card p',
+  '.ac-h h4','.ac-d','.ctab .cn','.ctab .cs','.tg','.exmp .et','.exmp .eb',
+  '.mt-t','.mt-i div:last-child','.scn-t','.scn-i','.footer'
+].join(',');
+let editMode=false;
+let toastTimer=null;
+
+function getEditTargets(){
+  return Array.from(document.querySelectorAll(editableSelector)).filter(el=>!el.closest('.fab-wrap'));
+}
+function initEditableTargets(){
+  getEditTargets().forEach((el,idx)=>{el.dataset.editId=String(idx);});
+}
+function setEditMode(on){
+  editMode=on;
+  document.body.classList.toggle('edit-on',on);
+  const btn=document.getElementById('editToggle');
+  btn.innerHTML=on?'<span class="dot"></span>편집 종료':'<span class="dot"></span>수정';
+  getEditTargets().forEach(el=>{
+    el.contentEditable=on?'true':'false';
+    el.spellcheck=false;
+    el.classList.toggle('editable-live',on);
+  });
+  if(on) showToast('텍스트와 표 셀을 바로 수정할 수 있습니다.');
+}
+function saveEdits(show=true){
+  const payload=getEditTargets().map(el=>({id:el.dataset.editId,html:el.innerHTML}));
+  localStorage.setItem(EDIT_KEY,JSON.stringify(payload));
+  if(show) showToast('현재 수정 내용이 이 브라우저에 저장되었습니다.');
+}
+function loadEdits(){
+  const raw=localStorage.getItem(EDIT_KEY);
+  if(!raw) return;
+  try{
+    const data=JSON.parse(raw);
+    const map=new Map(data.map(item=>[String(item.id),item.html]));
+    getEditTargets().forEach(el=>{
+      const saved=map.get(el.dataset.editId);
+      if(saved!==undefined) el.innerHTML=saved;
+    });
+  }catch(err){
+    console.error(err);
+  }
+}
+function resetEdits(){
+  localStorage.removeItem(EDIT_KEY);
+  location.reload();
+}
+function exportHtml(){
+  const clone=document.documentElement.cloneNode(true);
+  clone.querySelectorAll('[contenteditable]').forEach(el=>el.setAttribute('contenteditable','false'));
+  clone.querySelectorAll('.editable-live').forEach(el=>el.classList.remove('editable-live'));
+  const cloneBody=clone.querySelector('body');
+  if(cloneBody) cloneBody.classList.remove('edit-on');
+  const blob=new Blob(['<!DOCTYPE html>
+'+clone.outerHTML],{type:'text/html;charset=utf-8'});
+  const link=document.createElement('a');
+  link.href=URL.createObjectURL(blob);
+  link.download='DRB_C2B_edited.html';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  setTimeout(()=>URL.revokeObjectURL(link.href),500);
+  showToast('수정된 HTML 파일이 저장되었습니다.');
+}
+function showToast(message){
+  const toast=document.getElementById('toast');
+  toast.textContent=message;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>toast.classList.remove('show'),1800);
+}
+
+document.addEventListener('input',e=>{
+  if(editMode && e.target.matches(editableSelector)) saveEdits(false);
+});
+
+document.addEventListener('DOMContentLoaded',()=>{
+  initEditableTargets();
+  loadEdits();
+  getEditTargets().forEach(el=>el.contentEditable='false');
+});
+</script>
+
+<div class="fab-wrap" aria-label="편집 도구">
+  <button class="fab-btn primary" id="editToggle" onclick="setEditMode(!editMode)"><span class="dot"></span>수정</button>
+  <button class="fab-btn secondary" onclick="saveEdits()"><span class="dot"></span>브라우저 저장</button>
+  <button class="fab-btn secondary" onclick="exportHtml()"><span class="dot"></span>HTML 저장</button>
+  <button class="fab-btn secondary" onclick="resetEdits()"><span class="dot"></span>원복</button>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+</body>
+</html>
