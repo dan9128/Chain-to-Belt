@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>산업용 체인 분류 및 규격</title>
+<link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+
+:root{
+  --drb-red:#E31D38;
+  --drb-red-deep:#B7182E;
+  --drb-red-soft:#FCEBED;
+  --drb-gray:#706F72;
+  --drb-gray-deep:#4E4D50;
+  --drb-gray-soft:#F3F3F2;
+  --drb-light:#C9CBCF;
+  --drb-silver:#B3B6BA;
+  --drb-gold:#8C7750;
+  --drb-gold-soft:#F5F0E6;
+  --blue-soft:#EEF4FB;
+  --blue-deep:#2E5F93;
+  --green-soft:#EEF6E7;
+  --green-deep:#4E6B27;
+  --purple-soft:#F1EDFB;
+  --purple-deep:#5847A6;
+  --bg:#F7F6F4;
+  --card:#FFFFFF;
+  --text:#202327;
+  --text2:#505861;
+  --text3:#7E858D;
+  --border:#E1E4E8;
+  --shadow:0 10px 28px rgba(24, 29, 35, .05);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Pretendard',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  background:linear-gradient(180deg,#F8F7F5 0%,#F4F3F1 100%);
+  color:var(--text);
+  line-height:1.78;
+  font-size:15px;
+  word-break:keep-all;
+  overflow-wrap:anywhere;
+}
+.ci-band{
+  position:sticky; top:0; z-index:30;
+  height:8px; display:grid;
+  grid-template-columns:1.5fr 1.5fr 1fr 1fr 1fr;
+  box-shadow:0 1px 0 rgba(0,0,0,.04);
+}
+.ci-band span:nth-child(1){background:var(--drb-red)}
+.ci-band span:nth-child(2){background:var(--drb-gray)}
+.ci-band span:nth-child(3){background:var(--drb-light)}
+.ci-band span:nth-child(4){background:var(--drb-silver)}
+.ci-band span:nth-child(5){background:var(--drb-gold)}
+.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 76px}
+.main-title{
+  text-align:center;
+  margin:0 auto 26px;
+  padding:36px 30px 28px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:22px;
+  box-shadow:var(--shadow);
+}
+.main-title h1{font-size:30px;font-weight:800;letter-spacing:-.04em;line-height:1.28;margin-bottom:8px}
+.main-title p{font-size:13px;color:var(--text3);line-height:1.65}
+.section{
+  background:var(--card);
+  border-radius:20px;
+  margin-bottom:22px;
+  border:1px solid var(--border);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.section-head{
+  padding:22px 24px 16px;
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  border-bottom:1px solid rgba(0,0,0,.04);
+}
+.section-num{
+  width:42px;height:42px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:800;flex-shrink:0;color:#fff;
+}
+.section-info{flex:1;min-width:0}
+.section-info h2{font-size:20px;font-weight:800;letter-spacing:-.03em;line-height:1.4}
+.section-info .sub{font-size:12px;margin-top:4px;line-height:1.6}
+
+.section-body{padding:18px 24px 24px}
+.s1 .section-head{background:linear-gradient(180deg,#FFF 0%,#FFF 32%,#FCEBED 100%)}
+.s1 .section-num{background:var(--drb-red)}
+.s1 .section-info .sub{color:var(--drb-red-deep)}
+.s2 .section-head{background:linear-gradient(180deg,#FFF 0%,#FFF 32%,#F3F3F2 100%)}
+.s2 .section-num{background:var(--drb-gray)}
+.s2 .section-info .sub{color:var(--drb-gray-deep)}
+.s3 .section-head{background:linear-gradient(180deg,#FFF 0%,#FFF 32%,#F5F0E6 100%)}
+.s3 .section-num{background:var(--drb-gold)}
+.s3 .section-info .sub{color:var(--drb-gold)}
+.s4a .section-head{background:linear-gradient(180deg,#FFF 0%,#FFF 32%,#EEF4FB 100%)}
+.s4a .section-num{background:var(--blue-deep)}
+.s4a .section-info .sub{color:var(--blue-deep)}
+.s4b .section-head{background:linear-gradient(180deg,#FFF 0%,#FFF 32%,#EEF6E7 100%)}
+.s4b .section-num{background:var(--green-deep)}
+.s4b .section-info .sub{color:var(--green-deep)}
+.s4c .section-head{background:linear-gradient(180deg,#FFF 0%,#FFF 32%,#F1EDFB 100%)}
+.s4c .section-num{background:var(--purple-deep)}
+.s4c .section-info .sub{color:var(--purple-deep)}
+
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.tag{
+  padding:5px 10px;border-radius:999px;
+  font-size:11px;font-weight:700;line-height:1.3;
+}
+.s1 .tag,.s2 .tag,.s3 .tag{background:var(--drb-red-soft);color:var(--drb-red-deep)}
+.s4a .tag{background:var(--blue-soft);color:var(--blue-deep)}
+.s4b .tag{background:var(--green-soft);color:var(--green-deep)}
+.s4c .tag{background:var(--purple-soft);color:var(--purple-deep)}
+
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.ibox{
+  padding:16px 18px;border-radius:16px;border:1px solid var(--border);
+  background:#FBFBFB;
+  min-height:100%;
+  box-shadow:0 4px 14px rgba(24,29,35,.03);
+}
+.ibox .lab{
+  font-size:11px;font-weight:800;color:var(--text3);
+  text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px;line-height:1.4
+}
+.ibox .val{font-size:16px;font-weight:800;color:var(--text);line-height:1.45}
+.ibox .det{font-size:13px;color:var(--text2);margin-top:5px;line-height:1.75}
+.ibox.full{grid-column:1/-1}
+
+.tbl-wrap{
+  border-radius:16px;border:1px solid var(--border);
+  overflow:hidden;background:#FBFBFB;margin-bottom:16px;
+}
+.tbl-title{
+  font-size:11px;font-weight:800;color:var(--text3);
+  padding:13px 16px 8px;line-height:1.5;
+  text-transform:uppercase;letter-spacing:.04em
+}
+table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+th,td{
+  padding:12px 14px;border-bottom:1px solid var(--border);
+  vertical-align:middle;line-height:1.72;
+  word-break:keep-all;overflow-wrap:anywhere;
+}
+th{
+  text-align:center;font-weight:800;font-size:11px;
+  color:var(--text3);border-bottom:2px solid var(--drb-red);
+  background:#FAFAFA;letter-spacing:.04em
+}
+td{background:#fff}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#FCFBFB}
+.mono{font-family:'SF Mono','Fira Code',monospace;font-size:12px;font-weight:700}
+.r{text-align:right;font-weight:800}
+
+.example{
+  border-radius:16px;padding:18px 18px 18px 20px;
+  margin-bottom:16px;border:1px solid #F2D5DB;border-left:4px solid var(--drb-red);
+  background:var(--drb-red-soft)
+}
+.example .ex-title{font-size:14px;font-weight:800;margin-bottom:8px;line-height:1.5}
+.example .ex-body{font-size:13px;line-height:1.85;color:var(--text2)}
+.example .ex-body b{color:var(--text)}
+
+.maint,.scenario{
+  border-radius:16px;border:1px solid var(--border);
+  overflow:hidden;margin-bottom:16px;background:#fff
+}
+.maint-title,.scenario-title{
+  font-size:11px;font-weight:800;padding:13px 15px 10px;
+  line-height:1.5;letter-spacing:.04em;text-transform:uppercase
+}
+.maint-title{background:var(--drb-gray-soft);color:var(--text3)}
+.scenario-title{background:var(--drb-gold-soft);color:var(--drb-gold)}
+.maint-list,.scenario-list{padding:8px 15px 12px}
+.maint-item{
+  display:flex;gap:10px;padding:7px 0;font-size:13px;
+  line-height:1.75;align-items:flex-start
+}
+.maint-item .icon{
+  flex-shrink:0;width:20px;height:20px;border-radius:999px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;margin-top:2px;
+  background:var(--drb-red-soft);color:var(--drb-red-deep)
+}
+.scenario-item{
+  padding:10px 0;font-size:13px;line-height:1.85;
+  border-bottom:1px dashed var(--border)
+}
+.scenario-item:last-child{border-bottom:none}
+.scenario-item b{color:var(--text)}
+.scenario-item .stag{
+  display:inline-block;padding:3px 7px;border-radius:999px;
+  font-size:10px;font-weight:800;margin-right:4px;line-height:1.25
+}
+.stag.pro{background:#E5F4EE;color:#11624F}
+.stag.con{background:#FCEBEB;color:#8A2323}
+.stag.note{background:var(--drb-gold-soft);color:var(--drb-gold)}
+
+.note{
+  font-size:13px;color:var(--text2);line-height:1.78;
+  padding:14px 16px;border-radius:14px;background:var(--drb-gray-soft);
+  border-left:4px solid var(--drb-silver);margin-bottom:16px
+}
+.footer{
+  text-align:center;font-size:11px;color:var(--text3);
+  line-height:1.7;margin-top:18px;padding:14px 0 0
+}
+
+@media (max-width: 920px){
+  .wrap{padding:22px 16px 68px}
+  .main-title{padding:30px 22px 24px}
+  .main-title h1{font-size:26px}
+  .grid2,.grid3{grid-template-columns:1fr}
+}
+@media (max-width: 720px){
+  body{font-size:14px}
+  .main-title h1{font-size:22px}
+  .section-head{padding:18px 18px 14px}
+  .section-body{padding:16px 18px 18px}
+  .section-info h2{font-size:18px}
+  .tbl-wrap{overflow-x:auto}
+  table{min-width:640px}
+}
+
+/* === TABS === */
+.tab-bar{display:flex;gap:6px;margin-bottom:22px;flex-wrap:wrap}
+.tab-btn{flex:1;min-width:110px;padding:14px 10px;border-radius:14px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;text-align:center;user-select:none;transition:all .18s;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+.tab-btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.07)}
+.tab-btn .tn{font-size:13px;font-weight:700;color:var(--text)}
+.tab-btn .ts{font-size:10px;color:var(--text3);margin-top:2px}
+.tab-btn.act{border-color:var(--drb-red);background:var(--drb-red-soft);box-shadow:0 4px 14px rgba(227,29,56,.1)}
+.tab-btn.act .tn{color:var(--drb-red-deep)}
+.chain-sec{display:none;animation:fadeUp .3s ease}
+.chain-sec.vis{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* === HOVER HIGHLIGHT === */
+.ibox,.bx{transition:box-shadow .2s,border-color .2s,transform .18s}
+.ibox:hover,.bx:hover{box-shadow:0 4px 16px rgba(227,29,56,.08);border-color:rgba(227,29,56,.25);transform:translateY(-1px)}
+.maint,.scn,.tbl-wrap{transition:box-shadow .2s,border-color .2s}
+.maint:hover,.scn:hover{box-shadow:0 4px 16px rgba(0,0,0,.05);border-color:rgba(0,0,0,.12)}
+.tbl-wrap:hover{box-shadow:0 4px 16px rgba(0,0,0,.05)}
+table.dt tbody tr{transition:background .12s}
+table.dt tbody tr:hover{background:var(--drb-red-soft)}
+.example:hover{box-shadow:0 4px 16px rgba(227,29,56,.08)}
+
+</style>
+</head>
+<body>
+<div class="ci-band"><span></span><span></span><span></span><span></span><span></span></div>
+<div class="wrap">
+
+<div class="main-title">
+  <h1>산업용 체인 분류 및 규격</h1>
+  <p>ISO 국제 규격 기준 · kgf는 1 kg 물체를 매달았을 때 걸리는 힘을 의미하며, 1 kN ≈ 102 kgf입니다.</p>
+</div>
+
+<div class="tab-bar">
+  <div class="tab-btn act" onclick="showTab('lift',this)"><div class="tn">리프체인</div><div class="ts">승강 · 인양</div></div>
+  <div class="tab-btn" onclick="showTab('roller',this)"><div class="tn">롤러체인</div><div class="ts">동력전달</div></div>
+  <div class="tab-btn" onclick="showTab('conv',this)"><div class="tn">이송용</div><div class="ts">컨베이어</div></div>
+  <div class="tab-btn" onclick="showTab('agri',this)"><div class="tn">농기계용</div><div class="ts">트랙터 · 콤바인</div></div>
+  <div class="tab-btn" onclick="showTab('mine',this)"><div class="tn">광산 · 건설</div><div class="ts">채석 · 탄광</div></div>
+  <div class="tab-btn" onclick="showTab('marine',this)"><div class="tn">해양</div><div class="ts">오프쇼어</div></div>
+</div>
+
+<!-- ==================== 1. 리프체인 ==================== -->
+<div class="chain-sec vis" id="sec-lift">
+<div class="section s1">
+  <div class="section-head">
+    <div class="section-num">1</div>
+    <div class="section-info">
+      <h2>리프체인 (Leaf chain)</h2>
+      <div class="sub">승강 · 인양 — 지게차, 호이스트, 리프팅 장치</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="tags">
+      <span class="tag">지게차 마스트</span><span class="tag">호이스트</span><span class="tag">승강 장치</span><span class="tag">카운터웨이트</span>
+    </div>
+    <div class="grid2">
+      <div class="ibox">
+        <div class="lab">체인 규격</div>
+        <div class="val">ISO 4347:2015</div>
+        <div class="det">리프체인, 클레비스(연결고리), 도르래의 치수, 인장강도, 동적강도를 규정</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">안전 규격</div>
+        <div class="val">ISO 3691 (산업용 트럭 안전)</div>
+        <div class="det">지게차 등 산업차량의 체인 안전율과 점검 주기를 규정</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">교체 기준 (늘어남)</div>
+        <div class="val">2% 경고 → 3% 즉시 교체</div>
+        <div class="det">2% 이상: 강도 저하 시작, 3개월 내 교체 권고<br>3% 이상: 위험 — 장비 사용 중지, 즉시 교체</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">안전율</div>
+        <div class="val">일반 지게차 5:1 / 사람 탑승 10:1</div>
+        <div class="det">안전율 = 끊어지는 힘 ÷ 실제 사용 하중<br>값이 클수록 여유가 큰 설계<br>승객용 승강기는 20:1 수준 적용</div>
+      </div>
+      <div class="ibox full">
+        <div class="lab">사용 환경</div>
+        <div class="val">실내 산업환경 — 정기 윤활 필수 (SAE 30~40 기계유 권장)</div>
+        <div class="det">핀과 판 사이 마모가 주요 고장 원인입니다. 무윤활 상태에서는 수명이 급감하며, 부식 환경도 주의가 필요합니다.</div>
+      </div>
+    </div>
+
+    <div class="example">
+      <div class="ex-title">실무 예시: 1톤 지게차</div>
+      <div class="ex-body">
+        <b>적재 하중:</b> 1,000 kg (1톤)<br>
+        <b>체인 구성:</b> 2가닥 (좌·우 1줄씩), 도르래를 통해 유압 실린더에 연결<br>
+        <b>도르래 배율:</b> 2:1 → 체인 1가닥당 실제 부담 = 약 500 kgf<br>
+        <b>안전율 적용:</b> 500 × 5 (안전율) = <b>가닥당 최소 인장강도 2,500 kgf 이상 필요</b><br><br>
+        <b>체인 선정 예:</b> LH0844 (BL444) — 최소 인장강도 4,538 kgf<br>
+        → 필요 강도(2,500 kgf)를 충분히 초과하므로 적합<br>
+        → 실제 적용 시에는 충격하중, 경사, 마모를 고려해 여유 있는 규격을 선택합니다.
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <div class="tbl-title">최소 인장강도 — 대표 3종 (ISO 4347)</div>
+      <table>
+        <tr><th>체인 번호</th><th>용도 예시</th><th class="r">최소 인장강도</th></tr>
+        <tr><td class="mono">LH0844 (BL444)</td><td>1~1.5톤급 지게차</td><td class="r">4,538 kgf</td></tr>
+        <tr><td class="mono">LH1044 (BL544)</td><td>2~3톤급 지게차</td><td class="r">6,801 kgf</td></tr>
+        <tr><td class="mono">LH1246 (BL646)</td><td>5톤 이상 대형 장비</td><td class="r">9,687 kgf</td></tr>
+      </table>
+    </div>
+
+    <div class="maint">
+      <div class="maint-title">교체 및 유지보수 체크리스트</div>
+      <div class="maint-list">
+        <div class="maint-item"><div class="icon">1</div><div><b>늘어남 측정:</b> 체인 마모 게이지로 정기 측정 — 도르래 위를 지나는 구간이 가장 많이 닳으므로 이 부분을 측정</div></div>
+        <div class="maint-item"><div class="icon">2</div><div><b>핀 회전 확인:</b> 핀이 돌아가 있으면 즉시 교체 (육안으로 확인 가능)</div></div>
+        <div class="maint-item"><div class="icon">3</div><div><b>윤활:</b> 핀과 판 사이에 기름이 충분히 도달해야 함 — 표면에만 바르는 건 효과 없음</div></div>
+        <div class="maint-item"><div class="icon">4</div><div><b>좌우 균등:</b> 2가닥 체인은 반드시 동시에 한 세트로 교체 — 한쪽만 바꾸면 길이 차이로 하중 쏠림</div></div>
+        <div class="maint-item"><div class="icon">5</div><div><b>도르래 점검:</b> 체인 교체 시 도르래 마모 상태도 함께 확인 — 홈이 파이면 체인 수명 단축</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /sec-lift -->
+
+<div class="chain-sec" id="sec-roller">
+<!-- ==================== 2. 동력전달용 롤러체인 ==================== -->
+<div class="section s2">
+  <div class="section-head">
+    <div class="section-num">2</div>
+    <div class="section-info">
+      <h2>동력전달용 롤러체인 (Roller chain)</h2>
+      <div class="sub">회전 동력 전달 — 자동차, 이륜차, 산업기계</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="tags">
+      <span class="tag">자동차</span><span class="tag">오토바이</span><span class="tag">산업기계</span><span class="tag">일반 구동장치</span>
+    </div>
+    <div class="grid2">
+      <div class="ibox">
+        <div class="lab">체인 규격</div>
+        <div class="val">ISO 606:2015</div>
+        <div class="det">단피치 정밀 롤러/부시 체인 및 스프로킷(톱니바퀴)</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">안전 규격 / 선정 기준</div>
+        <div class="val">ISO 10823</div>
+        <div class="det">체인 전동장치 설계 지침 — 동력·속도에 따른 체인 선정</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">교체 기준 (늘어남)</div>
+        <div class="val">일반: 3% / 고정 간격: 1.5%</div>
+        <div class="det">
+          <b>고정 간격</b> = 톱니바퀴 간 거리를 늘릴 수 없는 구조<br>
+          → 체인이 조금만 늘어나도 맞물림 불량 → 1.5%에서 교체<br>
+          <b>일반</b> = 장력 조절 장치가 있어서 3%까지 허용
+        </div>
+      </div>
+      <div class="ibox">
+        <div class="lab">사용 환경</div>
+        <div class="val">실내외 — 속도별 윤활 방식 선택 필수</div>
+        <div class="det">저속: 수동 급유 → 중속: 적하 윤활 → 고속: 유조 윤활 → 초고속: 강제 윤활</div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <div class="tbl-title">최소 인장강도 — 대표 3종 (ISO 606, B시리즈 1줄)</div>
+      <table>
+        <tr><th>체인 번호</th><th>주요 용도</th><th class="r">최소 인장강도</th></tr>
+        <tr><td class="mono">08B-1</td><td>소형 기계, 경하중 구동</td><td class="r">1,815 kgf</td></tr>
+        <tr><td class="mono">12B-1</td><td>일반 산업기계, 중형 구동</td><td class="r">2,947 kgf</td></tr>
+        <tr><td class="mono">16B-1</td><td>대형 산업기계, 중하중 구동</td><td class="r">6,118 kgf</td></tr>
+      </table>
+    </div>
+    <div class="note">2줄(듀플렉스)은 1줄 대비 약 1.7배, 3줄(트리플렉스)은 약 2.5배 수준의 강도를 가집니다.</div>
+
+    <div class="maint">
+      <div class="maint-title">교체 및 유지보수 체크리스트</div>
+      <div class="maint-list">
+        <div class="maint-item"><div class="icon">1</div><div><b>늘어남 측정:</b> 캘리퍼스 또는 체인 마모 게이지로 정기 측정 — 10~13칸 구간을 측정하면 정확도 향상</div></div>
+        <div class="maint-item"><div class="icon">2</div><div><b>톱니바퀴 마모:</b> 톱니가 뾰족하게 닳으면 체인과 함께 교체 — 톱니만 새것이면 오히려 체인 수명 단축</div></div>
+        <div class="maint-item"><div class="icon">3</div><div><b>처짐 확인:</b> 위아래로 눌러 처짐량 확인 — 과도하면 장력 조절 장치 조정 또는 체인 교체</div></div>
+        <div class="maint-item"><div class="icon">4</div><div><b>윤활:</b> 핀과 부시(안쪽 통) 사이에 기름이 스며들어야 함 — 겉에만 바르면 효과 없음</div></div>
+        <div class="maint-item"><div class="icon">5</div><div><b>정렬:</b> 앞뒤 톱니바퀴가 평행한지 확인 — 어긋나면 한쪽만 편마모 발생</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== END ROLLER ==================== -->
+</div><!-- /sec-roller -->
+
+<div class="chain-sec" id="sec-conv">
+<!-- ==================== 3. 이송용 체인 ==================== -->
+<div class="section s3">
+  <div class="section-head">
+    <div class="section-num">3</div>
+    <div class="section-info">
+      <h2>이송용 체인 (Conveyor chain)</h2>
+      <div class="sub">이송 · 축적(대기) — 물류, 식품, 포장, 생산라인</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="tags">
+      <span class="tag">물류 컨베이어</span><span class="tag">식품 라인</span><span class="tag">포장기</span><span class="tag">생산 조립라인</span>
+    </div>
+    <div class="grid2">
+      <div class="ibox">
+        <div class="lab">체인 규격</div>
+        <div class="val">ISO 1275:2006</div>
+        <div class="det">더블피치(마디 2배 길이) 롤러체인 — 이송·컨베이어 전용</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">기반 규격</div>
+        <div class="val">ISO 606 (동력전달 롤러체인)</div>
+        <div class="det">ISO 606 체인의 마디 길이를 2배로 늘린 구조 — 저속·경하중 이송에 적합</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">교체 기준 (늘어남)</div>
+        <div class="val">사용 중 1.5~2%에서 교체 권고</div>
+        <div class="det">부속품(물건 올리는 판 등) 없는 체인: 길이 오차 ±0.15%<br>부속품 달린 체인: 길이 오차 ±0.25%까지 허용</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">사용 환경</div>
+        <div class="val">실내 — 식품등급(스테인리스), 클린룸, 고온 등</div>
+        <div class="det">프리플로우(축적) 체인은 체인 속도의 약 2~2.5배 수준으로 이송 가능</div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <div class="tbl-title">최소 인장강도 — 대표 3종 (ISO 1275, 더블피치 1줄)</div>
+      <table>
+        <tr><th>체인 번호</th><th>주요 용도</th><th class="r">최소 인장강도</th></tr>
+        <tr><td class="mono">C2040</td><td>경량 이송, 소형 컨베이어</td><td class="r">1,438 kgf</td></tr>
+        <tr><td class="mono">C2060</td><td>일반 물류·식품 라인</td><td class="r">2,947 kgf</td></tr>
+        <tr><td class="mono">C2080</td><td>중량물 이송, 대형 컨베이어</td><td class="r">6,118 kgf</td></tr>
+      </table>
+    </div>
+
+    <div class="maint">
+      <div class="maint-title">교체 및 유지보수 체크리스트</div>
+      <div class="maint-list">
+        <div class="maint-item"><div class="icon">1</div><div><b>늘어남 측정:</b> 컨베이어 전체 길이에서 균등하게 2~3곳 측정 — 한곳만 늘어나면 부분 마모 의심</div></div>
+        <div class="maint-item"><div class="icon">2</div><div><b>가이드레일 마모:</b> 체인이 레일 위를 미끄러지므로 레일 마모도 함께 점검</div></div>
+        <div class="maint-item"><div class="icon">3</div><div><b>이물질 제거:</b> 식품·포장 라인은 이물 끼임이 고장 1순위 원인 — 정기 청소 필수</div></div>
+        <div class="maint-item"><div class="icon">4</div><div><b>식품등급 윤활:</b> 식품 라인에서는 반드시 식품안전 등급(NSF H1) 윤활유 사용</div></div>
+        <div class="maint-item"><div class="icon">5</div><div><b>장력 확인:</b> 과도한 장력 → 마모 가속 / 느슨함 → 톱니바퀴 이탈 위험</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== END CONV ==================== -->
+</div><!-- /sec-conv -->
+
+<div class="chain-sec" id="sec-agri">
+<!-- ==================== 4-1. 특수용 — 농기계 ==================== -->
+<div class="section s4a">
+  <div class="section-head">
+    <div class="section-num">4A</div>
+    <div class="section-info">
+      <h2>특수용 체인 — 농기계</h2>
+      <div class="sub">트랙터, 콤바인, 수확기, 파종기, 사료 이송장치</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="tags">
+      <span class="tag">트랙터</span><span class="tag">콤바인</span><span class="tag">수확기</span><span class="tag">사료 이송</span><span class="tag">파종기</span>
+    </div>
+    <div class="grid2">
+      <div class="ibox">
+        <div class="lab">체인 규격</div>
+        <div class="val">ISO 487:1998 (S형·C형)</div>
+        <div class="det">농업·채석·기계 운반용 강철 롤러체인 및 부속품·톱니바퀴</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">안전 규격</div>
+        <div class="val">ISO 4254 시리즈 (농기계 안전)</div>
+        <div class="det">ISO 4254-1 (일반 안전) / ISO 4254-7 (콤바인·수확기 안전)</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">교체 기준</div>
+        <div class="val">일반 3% — 분진환경은 조기 교체 권장</div>
+        <div class="det">흙·풀·곡물 분진이 마모를 가속 — 시즌 후 반드시 점검</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">환경 특성</div>
+        <div class="val">분진, 계절적 장기 보관, 충격</div>
+        <div class="det">흙·곡물 분진 상시 노출, 비수기 수개월 보관 → 녹·고착 위험</div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <div class="tbl-title">최소 인장강도 — 대표 3종 (ISO 487, S형 농기계 체인)</div>
+      <table>
+        <tr><th>체인 번호</th><th>용도 예시</th><th class="r">최소 인장강도</th></tr>
+        <tr><td class="mono">S32</td><td>소형 이송·파종기</td><td class="r">1,100 kgf</td></tr>
+        <tr><td class="mono">S55</td><td>콤바인 구동·수확 이송</td><td class="r">2,300 kgf</td></tr>
+        <tr><td class="mono">S55H (고강도)</td><td>대형 콤바인·헤비듀티 구동</td><td class="r">3,200 kgf</td></tr>
+      </table>
+    </div>
+
+    <div class="maint">
+      <div class="maint-title">교체 및 유지보수 체크리스트</div>
+      <div class="maint-list">
+        <div class="maint-item"><div class="icon">1</div><div><b>시즌 후 세척:</b> 흙·풀·곡물 잔여물 제거 후 윤활유 도포 — 세척만 하면 수분으로 녹 발생</div></div>
+        <div class="maint-item"><div class="icon">2</div><div><b>비수기 보관:</b> 방청유 도포 + 건조한 곳 보관 — 수개월 방치 시 녹·고착으로 시즌 초 고장</div></div>
+        <div class="maint-item"><div class="icon">3</div><div><b>부속품 점검:</b> 수확기 어태치먼트(스크레이퍼, 이송판 등)의 용접부·볼트 풀림 확인</div></div>
+        <div class="maint-item"><div class="icon">4</div><div><b>톱니바퀴:</b> 흙이 끼면 맞물림 불량 — 사용 전 톱니 사이 이물질 청소</div></div>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-title">고강도 Carbon 심체 타이밍 벨트로 대체 시 시나리오</div>
+      <div class="scenario-list">
+        <div class="scenario-item">
+          <b>시나리오 1: 콤바인 곡물 이송부</b><br>
+          <span class="stag pro">장점</span> 윤활 불필요, 분진 환경에서 유지보수 대폭 감소. 비수기 보관 시 녹·고착 문제 완전 해결<br>
+          <span class="stag con">한계</span> 날카로운 줄기·돌멩이가 벨트 표면을 손상시킬 수 있음. 충격하중에 체인보다 취약<br>
+          <span class="stag note">핵심</span> 이물 방호 커버 설계가 필수 — 벨트 표면 손상 시 심체 노출로 급격한 수명 저하
+        </div>
+        <div class="scenario-item">
+          <b>시나리오 2: 트랙터 PTO 동력전달부</b><br>
+          <span class="stag pro">장점</span> 소음·진동 감소, 정숙한 구동. 윤활 없이도 작동 가능<br>
+          <span class="stag con">한계</span> 고토크 충격 시 벨트 이빨 건너뜀(치비) 위험. 기존 스프로킷 → 풀리 교체 필요<br>
+          <span class="stag note">핵심</span> 정격 토크 대비 3배 이상 피크 토크가 발생하는 구간에서는 체인이 여전히 유리
+        </div>
+        <div class="scenario-item">
+          <b>시나리오 3: 파종기 씨앗 간격 제어 구동</b><br>
+          <span class="stag pro">장점</span> 백래시(유격) 없이 정확한 위치 제어 가능 → 파종 간격 정밀도 향상<br>
+          <span class="stag con">한계</span> 벨트 장력 관리가 까다로움 — 온도 변화에 따른 벨트 길이 변화 고려 필요<br>
+          <span class="stag note">핵심</span> 정밀 위치 제어가 중요한 곳에서는 타이밍 벨트가 체인보다 우수한 대안
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== END AGRI ==================== -->
+</div><!-- /sec-agri -->
+
+<div class="chain-sec" id="sec-mine">
+<!-- ==================== 4-2. 특수용 — 광산·건설 ==================== -->
+<div class="section s4b">
+  <div class="section-head">
+    <div class="section-num">4B</div>
+    <div class="section-info">
+      <h2>특수용 체인 — 광산·건설</h2>
+      <div class="sub">채석장, 탄광, 시멘트 공장, 건설 현장 컨베이어</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="tags">
+      <span class="tag">채석장</span><span class="tag">탄광</span><span class="tag">시멘트</span><span class="tag">골재 이송</span><span class="tag">건설 현장</span>
+    </div>
+    <div class="grid2">
+      <div class="ibox">
+        <div class="lab">체인 규격</div>
+        <div class="val">ISO 610:1990 / DIN 22252</div>
+        <div class="det">광산용 고장력 원형 링크 강철 체인 — 체인 컨베이어 및 석탄 절삭기용</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">안전 규격</div>
+        <div class="val">ISO 3449 (ROPS), ISO 3471 (FOPS)</div>
+        <div class="det">건설·광산 장비 전복·낙하물 보호구조 안전 기준</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">교체 기준</div>
+        <div class="val">2% 이내 교체 권고 (가혹 환경)</div>
+        <div class="det">돌가루·시멘트 분진이 마모를 극심하게 가속 — 주 1회 이상 육안 점검</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">환경 특성</div>
+        <div class="val">극심한 분진, 강한 충격, 고하중 연속 운전</div>
+        <div class="det">암석·골재 충격, 시멘트·석분 연마 작용, 24시간 연속 가동 현장 다수</div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <div class="tbl-title">최소 인장강도 — 대표 3종 (ISO 610 / DIN 22252, 원형 링크 광산체인)</div>
+      <table>
+        <tr><th>체인 규격</th><th>용도 예시</th><th class="r">최소 인장강도</th></tr>
+        <tr><td class="mono">18×64 (C등급)</td><td>중형 스크레이퍼 컨베이어</td><td class="r">20,400 kgf</td></tr>
+        <tr><td class="mono">22×86 (C등급)</td><td>대형 채탄기·체인 컨베이어</td><td class="r">35,700 kgf</td></tr>
+        <tr><td class="mono">26×92 (C등급)</td><td>초대형 광산 설비</td><td class="r">49,000 kgf</td></tr>
+      </table>
+    </div>
+    <div class="note">광산 체인은 원형 링크 구조로 일반 롤러체인과 형상이 다릅니다. 규격은 보통 "와이어 직경 × 마디 안쪽 길이(mm)" 방식으로 표기합니다.</div>
+
+    <div class="maint">
+      <div class="maint-title">교체 및 유지보수 체크리스트</div>
+      <div class="maint-list">
+        <div class="maint-item"><div class="icon">1</div><div><b>마모 측정:</b> 링크 와이어 직경을 정기 측정 — 원래 직경 대비 10% 이상 마모 시 교체</div></div>
+        <div class="maint-item"><div class="icon">2</div><div><b>충격 이력:</b> 대형 암석 끼임·과부하 이벤트 후 반드시 전수 점검</div></div>
+        <div class="maint-item"><div class="icon">3</div><div><b>연결부 점검:</b> 샤클(연결고리) 볼트 풀림 및 마모 확인 — 연결부가 가장 취약점</div></div>
+        <div class="maint-item"><div class="icon">4</div><div><b>스크레이퍼 바:</b> 체인에 부착된 밀판(스크레이퍼)의 마모·변형 확인 — 이송 효율 저하 원인</div></div>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-title">고강도 Carbon 심체 타이밍 벨트로 대체 시 시나리오</div>
+      <div class="scenario-list">
+        <div class="scenario-item">
+          <b>시나리오 1: 석산 1차 파쇄기 후단 이송 컨베이어</b><br>
+          <span class="stag pro">장점</span> 윤활 불필요로 분진 환경 유지보수 대폭 감소. 경량화로 구동 에너지 절감<br>
+          <span class="stag con">한계</span> 날카로운 암석 조각이 벨트를 직접 절단할 수 있음. 충격하중 흡수 능력 부족<br>
+          <span class="stag note">핵심</span> 1차 파쇄 직후처럼 대형·날카로운 골재가 직접 닿는 구간에서는 체인 대체 불가 — 2차 이후 잔골재 이송에는 검토 가능
+        </div>
+        <div class="scenario-item">
+          <b>시나리오 2: 시멘트 공장 클링커 이송</b><br>
+          <span class="stag pro">장점</span> 소음 감소, 체인 대비 가벼워 에너지 비용 절감 가능<br>
+          <span class="stag con">한계</span> 클링커 온도 900°C 이상 — 일반 Carbon 심체 벨트의 내열 한계(약 100~150°C) 초과<br>
+          <span class="stag note">핵심</span> 고온 구간에서는 사실상 적용 불가 — 냉각 후 상온 이송 구간에서만 제한적 적용 가능
+        </div>
+        <div class="scenario-item">
+          <b>시나리오 3: 골재·모래 선별기 구동부</b><br>
+          <span class="stag pro">장점</span> 정확한 동기 구동으로 선별 정밀도 향상. 윤활유 오염 없어 골재 품질 유지<br>
+          <span class="stag con">한계</span> 모래 분진이 벨트 이빨 사이에 끼어 조기 마모 유발 가능<br>
+          <span class="stag note">핵심</span> 밀폐형 벨트 커버 + 에어블로어 이물 제거 시스템 병행 시 유효한 대안
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== END MINE ==================== -->
+</div><!-- /sec-mine -->
+
+<div class="chain-sec" id="sec-marine">
+<!-- ==================== 4-3. 특수용 — 해양·오프쇼어 ==================== -->
+<div class="section s4c">
+  <div class="section-head">
+    <div class="section-num">4C</div>
+    <div class="section-info">
+      <h2>특수용 체인 — 해양·오프쇼어</h2>
+      <div class="sub">해양 플랫폼, 조선, 항만 설비, 양식장</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="tags">
+      <span class="tag">해양 플랫폼</span><span class="tag">조선소</span><span class="tag">항만 크레인</span><span class="tag">양식장</span><span class="tag">해수 환경</span>
+    </div>
+    <div class="grid2">
+      <div class="ibox">
+        <div class="lab">체인 규격</div>
+        <div class="val">제조사별 특수 사양</div>
+        <div class="det">스테인리스(SUS316), 니켈 도금, 아연 도금 등 내부식 체인<br>해양 앵커 체인은 별도 규격 (IACS 선급 인증)</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">안전 규격</div>
+        <div class="val">선급 인증 (DNV, Lloyd's, ABS 등)</div>
+        <div class="det">해양 장비는 국제 선급 협회(IACS) 소속 인증기관의 형식 승인 필요</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">교체 기준</div>
+        <div class="val">2% 이내 또는 선급 규정 기준</div>
+        <div class="det">부식이 내부에 진행되면 겉으로는 멀쩡해도 강도가 급격히 저하<br>정기 비파괴검사(NDT) 필요</div>
+      </div>
+      <div class="ibox">
+        <div class="lab">환경 특성</div>
+        <div class="val">염수·해풍 부식, 고습도, 정비 접근 어려움</div>
+        <div class="det">바닷물·해풍에 의한 부식 상시 진행, 오프쇼어는 정비 기회가 제한적</div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <div class="tbl-title">참고 — 해양용 체인은 용도별 사양 차이가 크므로, 대표 재질별 내식성을 비교</div>
+      <table>
+        <tr><th>재질</th><th>내식성</th><th>특징</th></tr>
+        <tr><td class="mono">SUS304</td><td>보통 (담수·약산)</td><td>일반 식품·실내 습윤 환경에 적합</td></tr>
+        <tr><td class="mono">SUS316</td><td>우수 (해수 대응)</td><td>해양·화학 환경 — 해수 접촉부에 가장 많이 사용</td></tr>
+        <tr><td class="mono">니켈 합금 도금</td><td>매우 우수</td><td>극한 부식 환경, 높은 비용</td></tr>
+      </table>
+    </div>
+
+    <div class="maint">
+      <div class="maint-title">교체 및 유지보수 체크리스트</div>
+      <div class="maint-list">
+        <div class="maint-item"><div class="icon">1</div><div><b>부식 점검:</b> 표면 녹은 닦으면 되지만, 핀·부시 내부까지 침투하면 즉시 교체 — 겉은 멀쩡해도 안쪽이 삭을 수 있음</div></div>
+        <div class="maint-item"><div class="icon">2</div><div><b>비파괴검사(NDT):</b> 선급 규정에 따라 정기적 초음파·자분 탐상 검사 실시</div></div>
+        <div class="maint-item"><div class="icon">3</div><div><b>세척 후 방청:</b> 고압 세척 후 반드시 방청유 또는 해양용 윤활유 재도포</div></div>
+        <div class="maint-item"><div class="icon">4</div><div><b>예비 체인 확보:</b> 오프쇼어 환경은 부품 조달에 수일~수주 소요 — 현장 예비품 비축 필수</div></div>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-title">고강도 Carbon 심체 타이밍 벨트로 대체 시 시나리오</div>
+      <div class="scenario-list">
+        <div class="scenario-item">
+          <b>시나리오 1: 항만 컨테이너 크레인 횡행(트롤리) 구동부</b><br>
+          <span class="stag pro">장점</span> 윤활 불필요로 해수·해풍 환경에서 부식 문제 원천 제거. 경량화로 크레인 부하 감소<br>
+          <span class="stag con">한계</span> 자외선(UV) + 염분에 의한 벨트 외피 열화 가속. 강풍 시 진동에 의한 벨트 이탈 위험<br>
+          <span class="stag note">핵심</span> UV 차단 코팅 + 텐셔너 자동 보상 시스템 필수 — 밀폐 가능한 구동부에만 적합
+        </div>
+        <div class="scenario-item">
+          <b>시나리오 2: 양식장 사료 이송 컨베이어</b><br>
+          <span class="stag pro">장점</span> 체인 녹 조각이 사료에 혼입되는 위험 제거. 세척 간편, 위생적 운용 가능<br>
+          <span class="stag con">한계</span> 습윤 환경에서 벨트 이빨과 풀리 사이에 수분 침투 시 미끄러짐(슬립) 발생 가능<br>
+          <span class="stag note">핵심</span> 배수 설계가 잘 된 풀리 + 방수형 벨트 조합이면 체인 대비 위생성·내구성 모두 우위
+        </div>
+        <div class="scenario-item">
+          <b>시나리오 3: 오프쇼어 플랫폼 보조 윈치 구동</b><br>
+          <span class="stag pro">장점</span> 부식 면역으로 염수 환경 유지보수 주기 대폭 연장. 무급유 운전 가능<br>
+          <span class="stag con">한계</span> 고하중 순간 충격 시 벨트 이빨 파손 위험. 선급 인증 획득에 시간·비용 소요<br>
+          <span class="stag note">핵심</span> 보조 장비(경하중·저속)에는 적합하나, 주요 인양 장비에는 선급 규정상 체인 유지가 현실적
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div><!-- /sec-marine -->
+
+<div class="footer">
+  출처: ISO 4347:2015 · ISO 606:2015 · ISO 1275:2006 · ISO 487:1998 · ISO 610:1990 · ISO 3691 · ISO 10823 · ISO 4254<br>
+  인장강도 환산: 1 kN ≈ 102 kgf · 최소 인장강도는 파단 시험 기준값이며 실제 사용 하중과 동일하지 않습니다.
+</div>
+
+</div>
+<script>
+function showTab(id,el){
+  document.querySelectorAll('.chain-sec').forEach(function(s){s.classList.remove('vis')});
+  document.getElementById('sec-'+id).classList.add('vis');
+  document.querySelectorAll('.tab-btn').forEach(function(t){t.classList.remove('act')});
+  el.classList.add('act');
+  window.scrollTo({top:document.querySelector('.tab-bar').offsetTop-20,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
