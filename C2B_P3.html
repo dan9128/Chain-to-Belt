@@ -65,8 +65,8 @@ body{
 .sb-btn.shifted{left:calc(var(--sidebar-w) + 16px)}
 .sb-btn svg{width:18px;height:18px;stroke:var(--drb-gray);stroke-width:2;fill:none;stroke-linecap:round}
 
-.wrap{max-width:1180px;margin-left:var(--sidebar-w);transition:margin-left .3s;padding:26px 20px 76px}
-.wrap.exp{margin-left:0}
+.wrap{max-width:calc(1180px + var(--sidebar-w));margin:0 auto;padding:26px 20px 76px calc(var(--sidebar-w) + 20px);transition:padding-left .3s}
+.wrap.exp{padding-left:20px}
 .main-title{
   text-align:center;
   margin:0 auto 26px;
@@ -237,7 +237,7 @@ tbody tr:hover td{background:#FCFBFB}
 }
 @media (max-width: 768px){
   .sidebar{transform:translateX(calc(var(--sidebar-w)*-1))}
-  .wrap{margin-left:0}
+  .wrap{padding-left:16px}
   .sb-btn,.sb-btn.shifted{left:14px}
 }
 @media (max-width: 720px){

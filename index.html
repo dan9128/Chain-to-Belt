@@ -93,8 +93,8 @@ a{color:inherit}
 .sb-btn svg{width:18px;height:18px;stroke:var(--drb-gray);stroke-width:2;fill:none;stroke-linecap:round}
 
 /* MAIN */
-.main{margin-left:var(--sidebar-w);transition:margin-left .3s ease;min-height:100vh;padding:38px 36px 98px;max-width:1240px}
-.main.exp{margin-left:0}
+.main{max-width:calc(1240px + var(--sidebar-w));margin:0 auto;padding:38px 36px 98px calc(var(--sidebar-w) + 36px);transition:padding-left .3s ease;min-height:100vh}
+.main.exp{padding-left:36px}
 .page{display:none}.page.vis{display:block}
 .pg-t{text-align:center;margin:0 auto 32px;padding-top:14px;max-width:820px}
 .pg-t h2{font-size:30px;font-weight:800;letter-spacing:-.04em;line-height:1.26}
@@ -278,7 +278,7 @@ body.edit-on .fab-btn.secondary{display:inline-flex}
 .toast.show{opacity:1;transform:translateY(0)}
 
 @media (max-width: 1100px){
-  .main{padding:34px 24px 98px}
+  .main{padding:34px 24px 98px calc(var(--sidebar-w) + 24px)}
   .g2{grid-template-columns:1fr}
 }
 @media (max-width: 860px){
@@ -290,7 +290,7 @@ body.edit-on .fab-btn.secondary{display:inline-flex}
 @media (max-width: 680px){
   .sidebar{transform:translateX(calc(var(--sidebar-w)*-1))}
   .sidebar.closed{transform:translateX(calc(var(--sidebar-w)*-1))}
-  .main,.main.exp{margin-left:0;padding:28px 16px 98px}
+  .main,.main.exp{padding:28px 16px 98px}
   .sb-btn,.sb-btn.shifted{left:14px}
   .pg-t{padding-top:26px}
   .pg-t h2{font-size:23px}
