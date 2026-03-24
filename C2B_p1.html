@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>진행사항 점검 및 향후 방향검토</title>
+<link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+:root{
+  --drb-red:#E31D38;--drb-red-deep:#B7182E;--drb-red-soft:#FCEBED;
+  --drb-gray:#706F72;--drb-gray-deep:#4E4D50;--drb-gray-soft:#F3F3F2;
+  --drb-light:#C9CBCF;--drb-silver:#B3B6BA;
+  --drb-gold:#8C7750;--drb-gold-soft:#F5F0E6;
+  --bg:#F7F6F4;--card:#FFFFFF;--text:#202327;--text2:#505861;--text3:#7E858D;--border:#E1E4E8;
+  --shadow:0 10px 28px rgba(24,29,35,.05);
+  --sidebar-w:248px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Pretendard',system-ui,-apple-system,sans-serif;background:linear-gradient(180deg,#F8F7F5,#F4F3F1);color:var(--text);line-height:1.78;font-size:15px;word-break:keep-all;overflow-x:hidden}
+
+/* === SIDEBAR === */
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--card);border-right:1px solid var(--border);z-index:100;transition:transform .3s;display:flex;flex-direction:column}
+.sidebar.closed{transform:translateX(calc(var(--sidebar-w)*-1))}
+.sidebar-hd{padding:26px 22px 18px;border-bottom:1px solid var(--border)}
+.sidebar-logo{font-size:22px;font-weight:800;color:var(--drb-red);letter-spacing:-.04em;line-height:1.1}
+.sidebar-logo span{color:var(--drb-gray)}
+.sidebar-sub{font-size:11px;color:var(--text3);margin-top:5px}
+.sidebar-nav{flex:1;overflow-y:auto;padding:18px 12px}
+.nav-grp{margin-bottom:12px}.nav-grp-t{font-size:9px;font-weight:800;color:var(--drb-light);text-transform:uppercase;letter-spacing:1px;padding:4px 12px;margin-bottom:2px}
+.nav-i{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text2);transition:all .18s;user-select:none;text-decoration:none}
+.nav-i+.nav-i{margin-top:4px}
+.nav-i:hover{background:var(--drb-gray-soft);color:var(--text);transform:translateX(2px)}
+.nav-i.active{background:var(--drb-red-soft);color:var(--drb-red-deep);font-weight:800}
+.nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:var(--drb-light)}
+.nav-i.active .nav-dot{background:var(--drb-red)}
+.sb-btn{position:fixed;top:14px;left:14px;z-index:200;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:left .3s,box-shadow .15s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.sb-btn:hover{box-shadow:0 6px 18px rgba(32,35,39,.1);transform:translateY(-1px)}
+.sb-btn.shifted{left:calc(var(--sidebar-w) + 16px)}
+.sb-btn svg{width:18px;height:18px;stroke:var(--drb-gray);stroke-width:2;fill:none;stroke-linecap:round}
+
+/* === MAIN === */
+.main{max-width:calc(1180px + var(--sidebar-w));margin:0 auto;padding:26px 20px 72px calc(var(--sidebar-w) + 20px);transition:padding-left .3s;min-height:100vh}
+.main.exp{padding-left:20px}
+.main-title{text-align:center;margin:0 auto 26px;padding:36px 28px 28px;background:var(--card);border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow)}
+.main-title h1{font-size:30px;font-weight:800;letter-spacing:-.04em;line-height:1.28;margin-bottom:8px}
+.main-title p{font-size:13px;color:var(--text3);line-height:1.65}
+
+/* === SECTIONS === */
+.section{background:var(--card);border-radius:20px;margin-bottom:22px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s}
+.section:hover{box-shadow:0 12px 36px rgba(24,29,35,.07)}
+.section-head{padding:22px 24px 16px;display:flex;align-items:flex-start;gap:14px;border-bottom:1px solid rgba(0,0,0,.04)}
+.section-num{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;flex-shrink:0;color:#fff}
+.section-info{flex:1;min-width:0}
+.section-info h2{font-size:20px;font-weight:800;letter-spacing:-.03em;line-height:1.4}
+.section-info .sub{font-size:12px;margin-top:4px;line-height:1.6}
+.section-body{padding:18px 24px 24px}
+
+.s-red .section-head{background:linear-gradient(180deg,#FFF 0%,#FFF 32%,#FCEBED 100%)}
+.s-red .section-num{background:var(--drb-red)}
+.s-red .section-info .sub{color:var(--drb-red-deep)}
+
+.s-gold .section-head{background:linear-gradient(180deg,#FFF 0%,#FFF 32%,#F5F0E6 100%)}
+.s-gold .section-num{background:var(--drb-gold)}
+.s-gold .section-info .sub{color:var(--drb-gold)}
+
+/* === PROGRESS LIST === */
+.progress-list{list-style:none;padding:0}
+.progress-item{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:16px 18px;border-radius:14px;border:1px solid var(--border);
+  background:#FBFBFB;margin-bottom:10px;
+  transition:box-shadow .2s,border-color .2s,transform .18s;
+}
+.progress-item:hover{box-shadow:0 4px 16px rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);transform:translateY(-1px)}
+.progress-item:last-child{margin-bottom:0}
+
+.p-num{
+  flex-shrink:0;width:30px;height:30px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;color:#fff;background:var(--drb-red);
+}
+.p-content{flex:1;min-width:0}
+.p-content .p-title{font-size:15px;font-weight:700;line-height:1.5;color:var(--text)}
+.p-content .p-desc{font-size:13px;color:var(--text2);margin-top:3px;line-height:1.7}
+
+/* Status tags */
+.status{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;font-size:10px;font-weight:800;margin-left:8px;line-height:1.3;vertical-align:middle}
+.status.done{background:#E3F4ED;color:#0D624F}
+.status.review{background:var(--drb-gold-soft);color:var(--drb-gold)}
+.status.plan{background:var(--drb-gray-soft);color:var(--drb-gray-deep)}
+
+/* Completed item styling */
+.progress-item.completed{opacity:.55}
+.progress-item.completed .p-title{text-decoration:line-through;text-decoration-color:var(--drb-silver)}
+
+/* Phase divider */
+.phase-divider{
+  display:flex;align-items:center;gap:12px;
+  margin:24px 0 16px;padding:0 4px;
+}
+.phase-divider .line{flex:1;height:1px;background:var(--border)}
+.phase-divider .label{font-size:11px;font-weight:800;color:var(--drb-red);letter-spacing:.06em;text-transform:uppercase}
+
+.footer{text-align:center;font-size:11px;color:var(--text3);line-height:1.7;margin-top:18px;padding:14px 0 0}
+
+@media(max-width:920px){
+  .main{padding:22px 16px 68px calc(var(--sidebar-w) + 16px)}
+}
+@media(max-width:768px){
+  .sidebar{transform:translateX(calc(var(--sidebar-w)*-1))}
+  .main{padding-left:16px}
+  .sb-btn,.sb-btn.shifted{left:14px}
+}
+@media(max-width:720px){
+  body{font-size:14px}
+  .main-title h1{font-size:22px}
+  .section-head{padding:18px 18px 14px}
+  .section-body{padding:16px 18px 18px}
+  .section-info h2{font-size:18px}
+}
+</style>
+</head>
+<body>
+
+<button class="sb-btn shifted" onclick="togSB()">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+
+<aside class="sidebar" id="sb">
+  <div class="sidebar-hd"><div><div class="sidebar-logo">DRB <span>C2B</span></div><div class="sidebar-sub">Chain to Belt 전환 프로젝트</div></div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-grp"><div class="nav-grp-t">1차 보고</div><a class="nav-i" href="index.html"><div class="nav-dot"></div>C2B 요약 분석</a></div>
+    <div class="nav-grp"><div class="nav-grp-t">진행 현황</div><a class="nav-i active" href="C2B_p1.html"><div class="nav-dot"></div>진행사항 점검 및 향후 방향</a></div>
+    <div class="nav-grp"><div class="nav-grp-t">전환 검토</div><a class="nav-i" href="C2B_P2.html"><div class="nav-dot"></div>Chain → Belt 전환 단계</a></div>
+    <div class="nav-grp"><div class="nav-grp-t">체인 규격</div><a class="nav-i" href="C2B_P3.html"><div class="nav-dot"></div>산업용 체인 분류 및 규격</a></div>
+  </nav>
+</aside>
+
+<div class="main" id="mn">
+
+<div class="main-title">
+  <h1>진행사항 점검 및 향후 방향검토</h1>
+  <p>C2B 프로젝트 전체 진행 현황 및 다음 단계 로드맵</p>
+</div>
+
+<!-- 전체 진행 현황 -->
+<div class="section s-red">
+  <div class="section-head">
+    <div class="section-num">C2B</div>
+    <div class="section-info">
+      <h2>진행 현황</h2>
+      <div class="sub">1차 보고 기반 조사·분석 및 향후 로드맵</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <ul class="progress-list">
+      <li class="progress-item completed">
+        <div class="p-num">1</div>
+        <div class="p-content">
+          <div class="p-title">체인시장 확인 <span class="status done">완료</span></div>
+          <div class="p-desc">글로벌 및 국내 산업용 체인 시장 규모, 성장률, 주요 플레이어 조사</div>
+        </div>
+      </li>
+      <li class="progress-item completed">
+        <div class="p-num">2</div>
+        <div class="p-content">
+          <div class="p-title">체인구조 분석 <span class="status done">완료</span></div>
+          <div class="p-desc">롤러체인, 리프체인, 이송용 체인 등 구조별 특성 및 작동 원리 분석</div>
+        </div>
+      </li>
+      <li class="progress-item completed">
+        <div class="p-num">3</div>
+        <div class="p-content">
+          <div class="p-title">체인시장 어플리케이션별 구분 <span class="status done">완료</span></div>
+          <div class="p-desc">동력전달, 이송, 승강, 농기계, 광산·건설, 해양 등 용도별 시장 세분화</div>
+        </div>
+      </li>
+      <li class="progress-item completed">
+        <div class="p-num">4</div>
+        <div class="p-content">
+          <div class="p-title">벨트 경쟁업체 중 체인→벨트 대체 가능 제품 조사 <span class="status done">완료</span></div>
+          <div class="p-desc">주요 벨트 제조사의 체인 대체 솔루션 및 적용 사례 비교</div>
+        </div>
+      </li>
+      <li class="progress-item completed">
+        <div class="p-num">5</div>
+        <div class="p-content">
+          <div class="p-title">Chain → Belt 전환을 위한 검토단계 및 필요 요소 분석 <span class="status done">완료</span></div>
+          <div class="p-desc">전환 타당성 평가, 기술적 검토 요소, 단계별 프로세스 정리</div>
+        </div>
+      </li>
+      <li class="progress-item">
+        <div class="p-num" style="background:var(--drb-gold)">6</div>
+        <div class="p-content">
+          <div class="p-title">체인 목표 타겟시장 선정 <span class="status review">검토중</span></div>
+          <div class="p-desc">어플리케이션별 전환 가능성 평가를 기반으로 우선 진입 시장 선정</div>
+        </div>
+      </li>
+      <li class="progress-item">
+        <div class="p-num" style="background:var(--drb-gray)">7</div>
+        <div class="p-content">
+          <div class="p-title">제품 선정 및 실차 테스트 진행 <span class="status plan">예정</span></div>
+          <div class="p-desc">타겟 시장에 맞는 벨트 제품 선정 후 실제 장비에서 현장 테스트 수행</div>
+        </div>
+      </li>
+      <li class="progress-item">
+        <div class="p-num" style="background:var(--drb-gray)">8</div>
+        <div class="p-content">
+          <div class="p-title">기타 <span class="status plan">예정</span></div>
+          <div class="p-desc">추가 검토 사항 및 보완 과제</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer">
+  DRB C2B 프로젝트 — Chain to Belt 전환 프로젝트
+</div>
+
+</div>
+
+<script>
+function togSB(){var s=document.getElementById('sb'),m=document.getElementById('mn'),b=document.querySelector('.sb-btn');s.classList.toggle('closed');m.classList.toggle('exp');b.classList.toggle('shifted')}
+</script>
+</body>
+</html>
