@@ -108,6 +108,13 @@ body{
 .section-info h2{font-size:20px;font-weight:800;letter-spacing:-.03em;line-height:1.4}
 .section-info .sub{font-size:12px;margin-top:4px;line-height:1.6}
 
+.section-summary{
+  font-size:12px;font-weight:600;color:var(--text2);line-height:1.6;
+  padding:10px 16px;border-radius:10px;background:rgba(255,255,255,.7);
+  border:1px solid rgba(0,0,0,.06);margin-left:auto;flex-shrink:1;
+  max-width:420px;text-align:left;
+}
+
 .section-body{padding:18px 24px 24px}
 .s1 .section-head{background:linear-gradient(180deg,#FFF 0%,#FFF 32%,#FCEBED 100%)}
 .s1 .section-num{background:var(--drb-red)}
@@ -249,7 +256,8 @@ tbody tr:hover td{background:#FCFBFB}
 @media (max-width: 720px){
   body{font-size:14px}
   .main-title h1{font-size:22px}
-  .section-head{padding:18px 18px 14px}
+  .section-head{padding:18px 18px 14px;flex-wrap:wrap}
+  .section-summary{max-width:100%;margin-left:0;margin-top:8px}
   .section-body{padding:16px 18px 18px}
   .section-info h2{font-size:18px}
   .tbl-wrap{overflow-x:auto}
@@ -366,6 +374,7 @@ table tbody tr:hover{background:var(--drb-red-soft)}
       <h2>리프체인 (Leaf chain)</h2>
       <div class="sub">승강 · 인양 — 지게차, 호이스트, 리프팅 장치</div>
     </div>
+    <div class="section-summary">안전율 5~10:1, 벨트 전환 시 안전 인증 필수</div>
   </div>
   <div class="section-body">
     <div class="tags">
@@ -445,6 +454,7 @@ table tbody tr:hover{background:var(--drb-red-soft)}
       <h2>동력전달용 롤러체인 (Roller chain)</h2>
       <div class="sub">회전 동력 전달 — 자동차, 이륜차, 산업기계</div>
     </div>
+    <div class="section-summary">윤활 필수 구조 → 무급유 벨트 전환 시 유지보수 이점 극대화</div>
   </div>
   <div class="section-body">
     <div class="tags">
@@ -512,6 +522,7 @@ table tbody tr:hover{background:var(--drb-red-soft)}
       <h2>이송용 체인 (Conveyor chain)</h2>
       <div class="sub">이송 · 축적(대기) — 물류, 식품, 포장, 생산라인</div>
     </div>
+    <div class="section-summary">저속·경하중 중심, 벨트 대체 적합도 가장 높음</div>
   </div>
   <div class="section-body">
     <div class="tags">
@@ -575,6 +586,7 @@ table tbody tr:hover{background:var(--drb-red-soft)}
       <h2>특수용 체인 — 농기계</h2>
       <div class="sub">트랙터, 콤바인, 수확기, 파종기, 사료 이송장치</div>
     </div>
+    <div class="section-summary">분진·충격·온도 변화로 벨트 표면 손상 및 장력 관리 어려움</div>
   </div>
   <div class="section-body">
     <div class="tags">
@@ -661,6 +673,7 @@ table tbody tr:hover{background:var(--drb-red-soft)}
       <h2>특수용 체인 — 광산·건설</h2>
       <div class="sub">채석장, 탄광, 시멘트 공장, 건설 현장 컨베이어</div>
     </div>
+    <div class="section-summary">극한 충격·고하중·고온, 벨트 대체 가장 불리</div>
   </div>
   <div class="section-body">
     <div class="tags">
@@ -748,6 +761,7 @@ table tbody tr:hover{background:var(--drb-red-soft)}
       <h2>특수용 체인 — 해양·오프쇼어</h2>
       <div class="sub">해양 플랫폼, 조선, 항만 설비, 양식장</div>
     </div>
+    <div class="section-summary">부식 면역 벨트 강점 크나, 선급 인증·시험 허들 존재</div>
   </div>
   <div class="section-body">
     <div class="tags">
