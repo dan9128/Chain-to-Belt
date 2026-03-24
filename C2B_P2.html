@@ -46,8 +46,8 @@ body{font-family:'Pretendard',system-ui,-apple-system,sans-serif;background:line
 .sb-btn svg{width:18px;height:18px;stroke:var(--drb-gray);stroke-width:2;fill:none;stroke-linecap:round}
 
 /* === MAIN === */
-.main{margin-left:var(--sidebar-w);transition:margin-left .3s;min-height:100vh;padding:26px 20px 72px;max-width:1180px}
-.main.exp{margin-left:0}
+.main{max-width:calc(1180px + var(--sidebar-w));margin:0 auto;padding:26px 20px 72px calc(var(--sidebar-w) + 20px);transition:padding-left .3s;min-height:100vh}
+.main.exp{padding-left:20px}
 .main-title{text-align:center;margin:0 auto 26px;padding:36px 28px 28px;background:var(--card);border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow)}
 .main-title h1{font-size:30px;font-weight:800;letter-spacing:-.04em;line-height:1.28;margin-bottom:8px}
 .main-title p{font-size:13px;color:var(--text3);line-height:1.65}
@@ -116,7 +116,7 @@ body{font-family:'Pretendard',system-ui,-apple-system,sans-serif;background:line
 }
 @media(max-width:768px){
   .sidebar{transform:translateX(calc(var(--sidebar-w)*-1))}
-  .main{margin-left:0}
+  .main{padding-left:20px}
   .sb-btn,.sb-btn.shifted{left:14px}
   .flow-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
