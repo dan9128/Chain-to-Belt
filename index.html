@@ -274,17 +274,7 @@ table.dt tbody tr:hover td{background:var(--drb-red-soft)}
 @media (max-width: 680px){.part-grid,.alert-grid{grid-template-columns:1fr}.mk-seg-label{font-size:10px}}
 
 
-/* Inline edit */
-.fab-wrap{position:fixed;left:18px;bottom:18px;z-index:260;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
-.fab-btn{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:0 14px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,.96);backdrop-filter:blur(10px);box-shadow:var(--shadow-soft);cursor:pointer;color:var(--text);font-weight:800;transition:all .18s ease}
-.fab-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(32,35,39,.12)}
-.fab-btn.primary{background:var(--drb-red);border-color:var(--drb-red);color:#fff}
-.fab-btn.secondary{display:none}
-body.edit-on .fab-btn.secondary{display:inline-flex}
-.fab-btn .dot{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.8}
-.editable-live{outline:2px dashed rgba(227,29,56,.35);outline-offset:3px;background:rgba(252,235,237,.55);border-radius:6px}
-.toast{position:fixed;left:18px;bottom:170px;z-index:270;background:rgba(32,35,39,.94);color:#fff;padding:10px 12px;border-radius:12px;font-size:12px;line-height:1.5;opacity:0;transform:translateY(6px);pointer-events:none;transition:all .2s ease;max-width:260px;box-shadow:0 8px 22px rgba(0,0,0,.18)}
-.toast.show{opacity:1;transform:translateY(0)}
+
 
 @media (max-width: 1100px){
   .main{padding:34px 24px 98px calc(var(--sidebar-w) + 24px)}
@@ -306,7 +296,6 @@ body.edit-on .fab-btn.secondary{display:inline-flex}
   .sec-h{padding-top:18px;padding-bottom:10px}
   .ctab{min-width:calc(50% - 4px)}
   table.dt,.app-tbl,.comp-tbl,.stbl{font-size:12px}
-  .fab-wrap{left:14px;bottom:14px}
 }
 </style>
 </head>
@@ -593,102 +582,10 @@ function populateMakerData(){
   });
 }
 
-const EDIT_KEY='drb-c2b-inline-edit-v2';
-const editableSelector=[
-  '.sidebar-sub','.nav-grp-t','.nav-i',
-  '.main-title h1','.main-title p','.mission-label','.mission-text',
-  '.sec-i h3','.sec-i .sub','.bx .lb','.bx .vl','.bx .dt',
-  '.tbl-t','table th','table td','.nt','.dir-card h4','.dir-card p',
-  '.ac-h h4','.ac-d','.ctab .cn','.ctab .cs','.tg','.exmp .et','.exmp .eb',
-  '.mt-t','.mt-i div:last-child','.scn-t','.scn-i','.footer'
-].join(',');
-let editMode=false;
-let toastTimer=null;
-
-function getEditTargets(){
-  return Array.from(document.querySelectorAll(editableSelector)).filter(el=>!el.closest('.fab-wrap'));
-}
-function initEditableTargets(){
-  getEditTargets().forEach((el,idx)=>{el.dataset.editId=String(idx);});
-}
-function setEditMode(on){
-  editMode=on;
-  document.body.classList.toggle('edit-on',on);
-  const btn=document.getElementById('editToggle');
-  btn.innerHTML=on?'<span class="dot"></span>편집 종료':'<span class="dot"></span>수정';
-  getEditTargets().forEach(el=>{
-    el.contentEditable=on?'true':'false';
-    el.spellcheck=false;
-    el.classList.toggle('editable-live',on);
-  });
-  if(on) showToast('텍스트와 표 셀을 바로 수정할 수 있습니다.');
-}
-function saveEdits(show=true){
-  const payload=getEditTargets().map(el=>({id:el.dataset.editId,html:el.innerHTML}));
-  localStorage.setItem(EDIT_KEY,JSON.stringify(payload));
-  if(show) showToast('현재 수정 내용이 이 브라우저에 저장되었습니다.');
-}
-function loadEdits(){
-  const raw=localStorage.getItem(EDIT_KEY);
-  if(!raw) return;
-  try{
-    const data=JSON.parse(raw);
-    const map=new Map(data.map(item=>[String(item.id),item.html]));
-    getEditTargets().forEach(el=>{
-      const saved=map.get(el.dataset.editId);
-      if(saved!==undefined) el.innerHTML=saved;
-    });
-  }catch(err){
-    console.error(err);
-  }
-}
-function resetEdits(){
-  localStorage.removeItem(EDIT_KEY);
-  location.reload();
-}
-function exportHtml(){
-  const clone=document.documentElement.cloneNode(true);
-  clone.querySelectorAll('[contenteditable]').forEach(el=>el.setAttribute('contenteditable','false'));
-  clone.querySelectorAll('.editable-live').forEach(el=>el.classList.remove('editable-live'));
-  const cloneBody=clone.querySelector('body');
-  if(cloneBody) cloneBody.classList.remove('edit-on');
-  const blob=new Blob(['<!DOCTYPE html>\n'+clone.outerHTML],{type:'text/html;charset=utf-8'});
-  const link=document.createElement('a');
-  link.href=URL.createObjectURL(blob);
-  link.download='DRB_C2B_edited.html';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  setTimeout(()=>URL.revokeObjectURL(link.href),500);
-  showToast('수정된 HTML 파일이 저장되었습니다.');
-}
-function showToast(message){
-  const toast=document.getElementById('toast');
-  toast.textContent=message;
-  toast.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>toast.classList.remove('show'),1800);
-}
-
-document.addEventListener('input',e=>{
-  if(editMode && e.target.matches(editableSelector)) saveEdits(false);
-});
-
 document.addEventListener('DOMContentLoaded',()=>{
   populateMakerData();
-  initEditableTargets();
-  loadEdits();
-  getEditTargets().forEach(el=>el.contentEditable='false');
 });
 </script>
-
-<div class="fab-wrap" aria-label="편집 도구">
-  <button class="fab-btn primary" id="editToggle" onclick="setEditMode(!editMode)"><span class="dot"></span>수정</button>
-  <button class="fab-btn secondary" onclick="saveEdits()"><span class="dot"></span>브라우저 저장</button>
-  <button class="fab-btn secondary" onclick="exportHtml()"><span class="dot"></span>HTML 저장</button>
-  <button class="fab-btn secondary" onclick="resetEdits()"><span class="dot"></span>원복</button>
-</div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 </body>
 </html>
