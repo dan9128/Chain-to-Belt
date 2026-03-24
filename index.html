@@ -235,9 +235,9 @@ table.dt tbody tr:hover td{background:var(--drb-red-soft)}
 .dir-card{padding:16px 18px;border-radius:14px;border:1px solid var(--border);margin-bottom:10px;background:#fff}
 .dir-card h4{font-size:15px;font-weight:800;color:var(--drb-red-deep);margin-bottom:6px;line-height:1.5}
 .dir-card p{font-size:13px;color:var(--text2);line-height:1.8}
-.mission{text-align:center;padding:26px 22px;margin-bottom:18px;background:linear-gradient(135deg,var(--drb-red),var(--drb-red-deep));border-radius:18px;color:#fff;box-shadow:0 12px 28px rgba(227,29,56,.18)}
-.mission p{font-size:11px;opacity:.82;margin-bottom:5px;text-transform:uppercase;letter-spacing:.12em;line-height:1.4}
-.mission h3{font-size:24px;font-weight:800;line-height:1.45;letter-spacing:-.03em}
+.mission{display:inline-flex;align-items:center;gap:10px;margin-top:14px;padding:10px 20px;border-radius:12px;background:var(--drb-gray-soft);border:1px solid var(--border)}
+.mission-label{font-size:10px;font-weight:800;color:var(--drb-red);text-transform:uppercase;letter-spacing:.1em}
+.mission-text{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.02em}
 
 .footer{text-align:center;font-size:11px;color:var(--text3);line-height:1.7;margin-top:22px;padding:14px;border-top:1px solid var(--border)}
 .footer b{color:var(--drb-red)}
@@ -293,7 +293,6 @@ body.edit-on .fab-btn.secondary{display:inline-flex}
 @media (max-width: 860px){
   :root{--sidebar-w:230px}
   .pg-t h2{font-size:26px}
-  .mission h3{font-size:21px}
   .kv-bar{flex-direction:column}
 }
 @media (max-width: 680px){
@@ -342,7 +341,14 @@ body.edit-on .fab-btn.secondary{display:inline-flex}
 
 <!-- ======================== PAGE: C2B 요약 ======================== -->
 <div class="page vis" id="pg-c2b">
-  <div class="main-title"><h1>C2B 요약 분석</h1><p>목표 · 시장현황 · 어플리케이션 · 경쟁사 · 최종방향</p></div>
+  <div class="main-title">
+    <h1>C2B 요약 분석</h1>
+    <p>목표 · 시장현황 · 어플리케이션 · 경쟁사 · 최종방향</p>
+    <div class="mission">
+      <span class="mission-label">Mission</span>
+      <span class="mission-text">세상의 모든 체인을 벨트로 전환한다</span>
+    </div>
+  </div>
 
   <!-- 시장현황 -->
   <div class="sec"><div class="sec-h"><div class="sec-n">1</div><div class="sec-i"><h3>체인 시장 현황</h3><div class="sub">국내 산업용 체인 시장 2024~2025년 추정</div></div></div>
@@ -590,7 +596,7 @@ function populateMakerData(){
 const EDIT_KEY='drb-c2b-inline-edit-v2';
 const editableSelector=[
   '.sidebar-sub','.nav-grp-t','.nav-i',
-  '.main-title h1','.main-title p',
+  '.main-title h1','.main-title p','.mission-label','.mission-text',
   '.sec-i h3','.sec-i .sub','.bx .lb','.bx .vl','.bx .dt',
   '.tbl-t','table th','table td','.nt','.dir-card h4','.dir-card p',
   '.ac-h h4','.ac-d','.ctab .cn','.ctab .cs','.tg','.exmp .et','.exmp .eb',
