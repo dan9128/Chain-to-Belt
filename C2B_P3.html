@@ -97,6 +97,7 @@ body{
   display:flex;
   align-items:flex-start;
   gap:14px;
+  flex-wrap:wrap;
   border-bottom:1px solid rgba(0,0,0,.04);
 }
 .section-num{
@@ -104,15 +105,15 @@ body{
   display:flex;align-items:center;justify-content:center;
   font-size:16px;font-weight:800;flex-shrink:0;color:#fff;
 }
-.section-info{flex:1;min-width:0}
+.section-info{flex:1;min-width:180px}
 .section-info h2{font-size:20px;font-weight:800;letter-spacing:-.03em;line-height:1.4}
 .section-info .sub{font-size:12px;margin-top:4px;line-height:1.6}
 
 .section-summary{
   font-size:12px;font-weight:600;color:var(--text2);line-height:1.6;
   padding:10px 16px;border-radius:10px;background:rgba(255,255,255,.7);
-  border:1px solid rgba(0,0,0,.06);margin-left:auto;flex-shrink:1;
-  max-width:420px;text-align:left;
+  border:1px solid rgba(0,0,0,.06);
+  flex:1 1 240px;max-width:420px;text-align:left;
 }
 
 .conv-tag{display:inline-block;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:800;line-height:1.3}
@@ -266,8 +267,8 @@ tbody tr:hover td{background:#FCFBFB}
 @media (max-width: 720px){
   body{font-size:14px}
   .main-title h1{font-size:22px}
-  .section-head{padding:18px 18px 14px;flex-wrap:wrap}
-  .section-summary{max-width:100%;margin-left:0;margin-top:8px}
+  .section-head{padding:18px 18px 14px}
+  .section-summary{max-width:100%;flex-basis:100%}
   .ref-imgs{flex-direction:column}
   .ref-img{max-width:100%}
   .section-body{padding:16px 18px 18px}
@@ -456,6 +457,16 @@ table tbody tr:hover{background:var(--drb-red-soft)}
         <div class="maint-item"><div class="icon">5</div><div><b>도르래 점검:</b> 체인 교체 시 도르래 마모 상태도 함께 확인 — 홈이 파이면 체인 수명 단축</div></div>
       </div>
     </div>
+    <div class="example">
+      <div class="ex-title">Belt 전환 실증 테스트 계획</div>
+      <div class="ex-body">
+        <b>테스트 장비:</b> 스태커 2대 (1대 체인 / 1대 벨트) — 동일 강도 조건 설정<br>
+        <b>테스트 시작:</b> 2025년 4월<br>
+        <b>데이터 확보:</b> 2025년 6월 (약 2개월 반복 승강 테스트)<br>
+        <b>확보 데이터:</b> 신장율 비교, 마모 상태, 내구성 검증<br>
+        <b>활용:</b> 실수요처 직접 제출 가능 · 개선 방향 도출
+      </div>
+    </div>
   </div>
 </div>
 </div><!-- /sec-lift -->
@@ -567,6 +578,11 @@ table tbody tr:hover{background:var(--drb-red-soft)}
         <div class="det">부속품(물건 올리는 판 등) 없는 체인: 길이 오차 ±0.15%<br>부속품 달린 체인: 길이 오차 ±0.25%까지 허용</div>
       </div>
       <div class="ibox">
+        <div class="lab">정기 교체 주기</div>
+        <div class="val">표준 환경 매년 / 극한 환경 6개월</div>
+        <div class="det">롤러체인(3%) 대비 교체 기준이 타이트하여 정기 교체 수요가 잦은 시장</div>
+      </div>
+      <div class="ibox">
         <div class="lab">사용 환경</div>
         <div class="val">실내 — 식품등급(스테인리스), 클린룸, 고온 등</div>
         <div class="det">프리플로우(축적) 체인은 체인 속도의 약 2~2.5배 수준으로 이송 가능</div>
@@ -593,6 +609,7 @@ table tbody tr:hover{background:var(--drb-red-soft)}
         <div class="maint-item"><div class="icon">5</div><div><b>장력 확인:</b> 과도한 장력 → 마모 가속 / 느슨함 → 톱니바퀴 이탈 위험</div></div>
       </div>
     </div>
+    <div class="note">⚠ Belt 전환 시 유의사항 — 장거리 라인의 경우 체인은 마스터링크로 현장에서 바로 길이 조절이 가능하지만, 벨트는 엔드리스 구조로 장력 관리가 상대적으로 까다롭고, 풀리를 분해해야 교체가 가능합니다.</div>
   </div>
 </div>
 
@@ -747,6 +764,9 @@ table tbody tr:hover{background:var(--drb-red-soft)}
   <div class="section-body">
     <div class="tags">
       <span class="tag">해양 플랫폼</span><span class="tag">조선소</span><span class="tag">항만 크레인</span><span class="tag">양식장</span><span class="tag">해수 환경</span>
+    </div>
+    <div class="ref-imgs">
+      <div class="ref-img"><img src="img/Marine_1.jpg" alt="오프쇼어 대형 계류 앵커 체인"><div class="cap">오프쇼어 계류용 대구경 앵커 체인</div></div>
     </div>
     <div class="grid2">
       <div class="ibox">
