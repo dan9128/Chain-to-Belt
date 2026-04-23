@@ -102,6 +102,60 @@ body{font-family:'Pretendard',system-ui,-apple-system,sans-serif;background:line
   .rm-arrow{transform:rotate(90deg);padding:4px 0}
 }
 
+/* === METHOD CARDS === */
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:4px}
+.method-card{
+  padding:20px 20px 18px;border-radius:16px;border:1.5px solid var(--border);
+  background:#FBFBFB;transition:all .2s;position:relative;display:flex;flex-direction:column
+}
+.method-card:hover{box-shadow:0 8px 22px rgba(24,29,35,.07);transform:translateY(-2px)}
+.method-card.now{border-color:var(--drb-red);background:linear-gradient(180deg,#FFF,#FCEBED 120%)}
+.method-card .mc-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.method-card .mc-num{
+  width:28px;height:28px;border-radius:8px;color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;
+  background:var(--drb-gray)
+}
+.method-card.now .mc-num{background:var(--drb-red)}
+.method-card .mc-t{font-size:15px;font-weight:800;line-height:1.35;flex:1;color:var(--text)}
+.method-card .mc-badge{padding:3px 9px;border-radius:999px;font-size:10px;font-weight:800;line-height:1.3;flex-shrink:0}
+.method-card .mc-badge.now{background:var(--drb-red-soft);color:var(--drb-red-deep)}
+.method-card .mc-badge.survey{background:var(--drb-gray-soft);color:var(--drb-gray-deep)}
+.method-card .mc-d{font-size:13px;color:var(--text2);line-height:1.72;flex:1}
+.method-card .mc-ex{
+  margin-top:10px;padding:8px 12px;border-radius:8px;
+  background:#FFF;border:1px dashed var(--drb-red);
+  font-size:12px;color:var(--drb-red-deep);font-weight:700;line-height:1.5
+}
+.method-card .mc-ex b{color:var(--drb-red);font-weight:800}
+
+@media(max-width:720px){.method-grid{grid-template-columns:1fr}}
+
+/* === DIRECTION BOX === */
+.direction-box{
+  margin-top:16px;padding:16px 20px;border-radius:14px;
+  background:linear-gradient(90deg,#FCEBED,#FFF 85%);
+  border-left:4px solid var(--drb-red)
+}
+.direction-box .db-t{
+  font-size:11px;font-weight:800;color:var(--drb-red);
+  letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px
+}
+.direction-box .db-body{font-size:13.5px;line-height:1.72;color:var(--text)}
+.direction-box .db-body b{color:var(--drb-red-deep);font-weight:800}
+
+/* === ACTION NOTE === */
+.action-note{
+  margin-top:16px;padding:14px 18px;border-radius:12px;
+  background:var(--drb-gold-soft);border-left:4px solid var(--drb-gold)
+}
+.action-note .an-t{
+  font-size:11px;font-weight:800;color:var(--drb-gold);
+  letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px
+}
+.action-note .an-body{font-size:13.5px;line-height:1.7;color:var(--text)}
+.action-note .an-body b{font-weight:800;color:var(--drb-gold)}
+
 /* === REPORT === */
 .sub-hd{
   font-size:14px;font-weight:800;color:var(--drb-red-deep);
@@ -192,7 +246,7 @@ body{font-family:'Pretendard',system-ui,-apple-system,sans-serif;background:line
       <a class="nav-i" href="index.html"><div class="nav-dot"></div>1차 보고 자료</a>
     </div>
     <div class="nav-grp">
-      <a class="nav-i" href="C2B_P1.html"><div class="nav-dot"></div>진행사항 점검 및 향후 방향검토</a>
+      <a class="nav-i" href="C2B_p1.html"><div class="nav-dot"></div>진행사항 점검 및 향후 방향검토</a>
     </div>
     <div class="nav-grp">
       <div class="nav-grp-t clickable" onclick="togGrp(this)">
@@ -238,7 +292,7 @@ body{font-family:'Pretendard',system-ui,-apple-system,sans-serif;background:line
       <div class="rm-step now">
         <div class="rm-n">STEP 01</div>
         <div class="rm-t">타겟 업체 발굴</div>
-        <div class="rm-d">DRB 기존 유통망(특약점·대리점)을 통해 C2B 전환 가능 업체 발굴 및 접촉</div>
+        <div class="rm-d">대상 <b>산업군 기반</b> + DRB <b>특약점 기반</b> 2가지 방법 병행하여 대상업체 발굴</div>
         <div class="rm-badge">진행중</div>
       </div>
       <div class="rm-arrow">→</div>
@@ -259,13 +313,56 @@ body{font-family:'Pretendard',system-ui,-apple-system,sans-serif;background:line
   </div>
 </div>
 
-<!-- ============== 섹션 2: 특약점 방문 ============== -->
+<!-- ============== 섹션 2: 대상업체 탐색 방법 ============== -->
 <div class="section s-red">
   <div class="section-head">
     <div class="section-num">2</div>
     <div class="section-info">
-      <h2>특약점 방문</h2>
-      <div class="sub">금성콘베어(12648) · CB 특약점(일반A) · 25년 매출 1.6억</div>
+      <h2>대상업체 탐색 방법</h2>
+      <div class="sub">2가지 방법을 병행하여 타겟 업체 발굴</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="method-grid">
+      <div class="method-card">
+        <div class="mc-head">
+          <div class="mc-num">01</div>
+          <div class="mc-t">대상 산업군 기반</div>
+          <span class="mc-badge survey">조사중</span>
+        </div>
+        <div class="mc-d">
+          대상 산업군을 먼저 선정한 후, 해당 산업 내 대상업체 발굴 — <b>실제 사용자·제조사 직접 접근</b>
+        </div>
+      </div>
+      <div class="method-card now">
+        <div class="mc-head">
+          <div class="mc-num">02</div>
+          <div class="mc-t">DRB 특약점 기반</div>
+          <span class="mc-badge now">진행중</span>
+        </div>
+        <div class="mc-d">
+          DRB 기존 유통망(특약점)을 통해 대상업체 선정 — <b>기계제작업체 위주</b> C2B 홍보·발굴
+        </div>
+        <div class="mc-ex">→ 방문 사례: <b>금성콘베어</b> (3/26 · 대구지역 특약점)</div>
+      </div>
+    </div>
+
+    <div class="direction-box">
+      <div class="db-t">방향성 — 2가지 방법 병행</div>
+      <div class="db-body">
+        대상 산업군 검토 후 <b>실제 사용자·제조사 접근</b> + DRB 특약점(기계제작업체) 中 <b>테스트 가능업체 선정</b>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============== 섹션 3: 특약점 방문 — 금성콘베어 ============== -->
+<div class="section s-red">
+  <div class="section-head">
+    <div class="section-num">3</div>
+    <div class="section-info">
+      <h2>특약점 방문 — 금성콘베어 (3/26)</h2>
+      <div class="sub">대구지역 CB 특약점(일반A) · 컨베어벨트 판매+기계제작 · 25년 매출 1.6억</div>
     </div>
   </div>
   <div class="section-body">
@@ -286,13 +383,21 @@ body{font-family:'Pretendard',system-ui,-apple-system,sans-serif;background:line
       <li>벨트 및 풀리 <b>전환비용은 DRB 제공</b>으로 도입 부담 해소</li>
     </ul>
 
+    <!-- Follow-up Action -->
+    <div class="action-note">
+      <div class="an-t">Follow-up Action</div>
+      <div class="an-body">
+        DRB 특약점 중 <b>기계제작업체 위주</b>로 C2B 내용 홍보 및 전환 가능 업체 발굴 지속
+      </div>
+    </div>
+
   </div>
 </div>
 
-<!-- ============== 섹션 3: 실차 테스트 진행사항 ============== -->
+<!-- ============== 섹션 4: 실차 테스트 진행사항 ============== -->
 <div class="section s-gold">
   <div class="section-head">
-    <div class="section-num">3</div>
+    <div class="section-num">4</div>
     <div class="section-info">
       <h2>실차 테스트 진행사항</h2>
       <div class="sub">스태커(Stacker) 체인 → 벨트 전환 비교 테스트</div>
@@ -301,7 +406,7 @@ body{font-family:'Pretendard',system-ui,-apple-system,sans-serif;background:line
   <div class="section-body">
     <div class="img-grid">
       <div class="img-card">
-        <div class="img-wrap"><img src="p4_1.jpeg" alt="체인 장착 스태커" loading="lazy"></div>
+        <div class="img-wrap"><img src="img/p4_1.jpeg" alt="체인 장착 스태커" loading="lazy"></div>
         <div class="img-cap">
           <div class="lb">P4_1</div>
           <div class="ttl">체인 장착 스태커</div>
@@ -309,7 +414,7 @@ body{font-family:'Pretendard',system-ui,-apple-system,sans-serif;background:line
         </div>
       </div>
       <div class="img-card">
-        <div class="img-wrap"><img src="p4_2.jpeg" alt="DRB 벨트 장착 스태커" loading="lazy"></div>
+        <div class="img-wrap"><img src="img/p4_2.jpeg" alt="DRB 벨트 장착 스태커" loading="lazy"></div>
         <div class="img-cap">
           <div class="lb">P4_2</div>
           <div class="ttl">DRB 벨트 장착 스태커</div>
@@ -317,7 +422,7 @@ body{font-family:'Pretendard',system-ui,-apple-system,sans-serif;background:line
         </div>
       </div>
       <div class="img-card">
-        <div class="img-wrap"><img src="p4_3.jpeg" alt="체인 & 벨트 장착 스태커" loading="lazy"></div>
+        <div class="img-wrap"><img src="img/p4_3.jpeg" alt="체인 & 벨트 장착 스태커" loading="lazy"></div>
         <div class="img-cap">
           <div class="lb">P4_3</div>
           <div class="ttl">체인 & 벨트 비교 장비</div>
