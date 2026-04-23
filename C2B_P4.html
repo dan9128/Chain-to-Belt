@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>유통망 기반 실차 테스트 — DRB C2B</title>
+<link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+:root{
+  --drb-red:#E31D38;--drb-red-deep:#B7182E;--drb-red-soft:#FCEBED;
+  --drb-gray:#706F72;--drb-gray-deep:#4E4D50;--drb-gray-soft:#F3F3F2;
+  --drb-light:#C9CBCF;--drb-silver:#B3B6BA;
+  --drb-gold:#8C7750;--drb-gold-soft:#F5F0E6;
+  --green-deep:#0D624F;--green-soft:#E3F4ED;
+  --blue-deep:#2E5F93;--blue-soft:#EEF4FB;
+  --bg:#F7F6F4;--card:#FFFFFF;--text:#202327;--text2:#505861;--text3:#7E858D;--border:#E1E4E8;
+  --shadow:0 10px 28px rgba(24,29,35,.05);
+  --sidebar-w:248px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Pretendard',system-ui,-apple-system,sans-serif;background:linear-gradient(180deg,#F8F7F5,#F4F3F1);color:var(--text);line-height:1.78;font-size:15px;word-break:keep-all;overflow-x:hidden}
+
+/* === SIDEBAR === */
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--card);border-right:1px solid var(--border);z-index:100;transition:transform .3s;display:flex;flex-direction:column}
+.sidebar.closed{transform:translateX(calc(var(--sidebar-w)*-1))}
+.sidebar-hd{padding:26px 22px 18px;border-bottom:1px solid var(--border)}
+.sidebar-logo{font-size:22px;font-weight:800;color:var(--drb-red);letter-spacing:-.04em;line-height:1.1}
+.sidebar-logo span{color:var(--drb-gray)}
+.sidebar-sub{font-size:11px;color:var(--text3);margin-top:5px}
+.sidebar-nav{flex:1;overflow-y:auto;padding:18px 12px}
+.nav-grp{margin-bottom:12px}
+.nav-grp-t{font-size:9px;font-weight:800;color:var(--drb-light);text-transform:uppercase;letter-spacing:1px;padding:4px 12px;margin-bottom:2px}
+.nav-i{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text2);transition:all .18s;user-select:none;text-decoration:none}
+.nav-i+.nav-i{margin-top:4px}
+.nav-i:hover{background:var(--drb-gray-soft);color:var(--text);transform:translateX(2px)}
+.nav-i.active{background:var(--drb-red-soft);color:var(--drb-red-deep);font-weight:800}
+.nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:var(--drb-light)}
+.nav-i.active .nav-dot{background:var(--drb-red)}
+.nav-sub{padding-left:18px}
+.nav-sub .nav-i{font-size:12px;padding:8px 12px;gap:8px}
+.nav-sub .nav-dot{width:5px;height:5px}
+.nav-status{font-size:9px;font-weight:700;padding:2px 6px;border-radius:999px;margin-left:auto;flex-shrink:0;line-height:1.3}
+.nav-status.done{background:#E3F4ED;color:#0D624F}
+.nav-status.review{background:#F5F0E6;color:#8C7750}
+.nav-grp-t.clickable{cursor:pointer;user-select:none;display:flex;align-items:center;justify-content:space-between;transition:color .15s}
+.nav-grp-t.clickable:hover{color:var(--drb-red)}
+.nav-grp-t .chev{width:10px;height:10px;stroke:currentColor;stroke-width:2.2;fill:none;transition:transform .22s ease;flex-shrink:0}
+.nav-grp-t.collapsed .chev{transform:rotate(-90deg)}
+.nav-sub{overflow:hidden;max-height:600px;transition:max-height .28s ease,opacity .22s ease;opacity:1}
+.nav-sub.collapsed{max-height:0;opacity:0}
+
+.sb-btn{position:fixed;top:14px;left:14px;z-index:200;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:left .3s,box-shadow .15s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.sb-btn:hover{box-shadow:0 6px 18px rgba(32,35,39,.1);transform:translateY(-1px)}
+.sb-btn.shifted{left:calc(var(--sidebar-w) + 16px)}
+.sb-btn svg{width:18px;height:18px;stroke:var(--drb-gray);stroke-width:2;fill:none;stroke-linecap:round}
+
+/* === MAIN === */
+.main{max-width:calc(1180px + var(--sidebar-w));margin:0 auto;padding:26px 20px 72px calc(var(--sidebar-w) + 20px);transition:padding-left .3s;min-height:100vh}
+.main.exp{padding-left:20px}
+.main-title{text-align:center;margin:0 auto 26px;padding:36px 28px 28px;background:var(--card);border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow)}
+.main-title h1{font-size:30px;font-weight:800;letter-spacing:-.04em;line-height:1.28;margin-bottom:8px}
+.main-title p{font-size:13px;color:var(--text3);line-height:1.65}
+
+/* === SECTIONS === */
+.section{background:var(--card);border-radius:20px;margin-bottom:22px;border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .2s}
+.section:hover{box-shadow:0 12px 36px rgba(24,29,35,.07)}
+.section-head{padding:22px 24px 16px;display:flex;align-items:flex-start;gap:14px;border-bottom:1px solid rgba(0,0,0,.04)}
+.section-num{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;flex-shrink:0;color:#fff}
+.section-info{flex:1;min-width:0}
+.section-info h2{font-size:20px;font-weight:800;letter-spacing:-.03em;line-height:1.4}
+.section-info .sub{font-size:12px;margin-top:4px;line-height:1.6}
+.section-body{padding:18px 24px 24px}
+
+.s-red .section-head{background:linear-gradient(180deg,#FFF 0%,#FFF 32%,#FCEBED 100%)}
+.s-red .section-num{background:var(--drb-red)}
+.s-red .section-info .sub{color:var(--drb-red-deep)}
+
+.s-gold .section-head{background:linear-gradient(180deg,#FFF 0%,#FFF 32%,#F5F0E6 100%)}
+.s-gold .section-num{background:var(--drb-gold)}
+.s-gold .section-info .sub{color:var(--drb-gold)}
+
+.s-gray .section-head{background:linear-gradient(180deg,#FFF 0%,#FFF 32%,#F3F3F2 100%)}
+.s-gray .section-num{background:var(--drb-gray)}
+.s-gray .section-info .sub{color:var(--drb-gray-deep)}
+
+/* === ROADMAP === */
+.roadmap{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:stretch;gap:0;margin:4px 0}
+.rm-step{padding:18px 18px;border-radius:16px;border:1.5px solid var(--border);background:#FBFBFB;position:relative;transition:all .2s;min-height:132px;display:flex;flex-direction:column}
+.rm-step:hover{border-color:var(--drb-red);box-shadow:0 6px 18px rgba(227,29,56,.08);transform:translateY(-2px)}
+.rm-step .rm-n{font-size:10px;font-weight:800;color:var(--drb-red);letter-spacing:.1em;margin-bottom:6px}
+.rm-step .rm-t{font-size:15px;font-weight:800;line-height:1.4;margin-bottom:6px;color:var(--text)}
+.rm-step .rm-d{font-size:12px;color:var(--text2);line-height:1.6;flex:1}
+.rm-step .rm-badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;font-size:10px;font-weight:800;margin-top:10px;align-self:flex-start;line-height:1.3}
+.rm-step.now{border-color:var(--drb-red);background:linear-gradient(180deg,#FFF,#FCEBED)}
+.rm-step.now .rm-badge{background:var(--drb-red-soft);color:var(--drb-red-deep)}
+.rm-step.plan .rm-badge{background:var(--drb-gray-soft);color:var(--drb-gray-deep)}
+.rm-arrow{display:flex;align-items:center;justify-content:center;padding:0 10px;color:var(--drb-light);font-size:22px;font-weight:800}
+
+@media(max-width:820px){
+  .roadmap{grid-template-columns:1fr;gap:10px}
+  .rm-arrow{transform:rotate(90deg);padding:4px 0}
+}
+
+/* === REPORT === */
+.sub-hd{
+  font-size:14px;font-weight:800;color:var(--drb-red-deep);
+  margin:18px 0 10px;padding:0 0 6px;
+  border-bottom:1.5px solid var(--drb-red-soft);
+  display:flex;align-items:center;gap:8px
+}
+.sub-hd::before{content:"";width:4px;height:14px;background:var(--drb-red);border-radius:2px}
+.sub-hd:first-child{margin-top:0}
+
+.insight-list{list-style:none;padding:0}
+.insight-list li{
+  padding:10px 14px 10px 30px;border-radius:10px;background:#FAFAFA;margin-bottom:6px;
+  font-size:13.5px;color:var(--text);line-height:1.65;position:relative;
+  border:1px solid transparent;transition:all .15s
+}
+.insight-list li:hover{background:#FCEBED;border-color:#F5C6CE}
+.insight-list li::before{
+  content:"";position:absolute;left:12px;top:18px;
+  width:6px;height:6px;border-radius:50%;background:var(--drb-red)
+}
+.insight-list li b{font-weight:800;color:var(--drb-red-deep)}
+
+.agree-list{list-style:none;padding:0}
+.agree-list li{
+  padding:12px 14px 12px 34px;border-radius:10px;background:var(--blue-soft);margin-bottom:6px;
+  font-size:13.5px;color:var(--text);line-height:1.65;position:relative;
+  border:1px solid #D4E2F2
+}
+.agree-list li::before{
+  content:"✓";position:absolute;left:13px;top:10px;
+  font-weight:800;color:var(--blue-deep);font-size:14px
+}
+.agree-list li b{font-weight:800;color:var(--blue-deep)}
+
+/* === IMG GALLERY === */
+.img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:4px}
+.img-card{
+  border-radius:14px;overflow:hidden;border:1px solid var(--border);
+  background:#FBFBFB;transition:all .2s;display:flex;flex-direction:column
+}
+.img-card:hover{box-shadow:0 10px 28px rgba(24,29,35,.1);transform:translateY(-3px);border-color:var(--drb-red)}
+.img-card .img-wrap{
+  width:100%;aspect-ratio:3/4;overflow:hidden;background:#222;
+  display:flex;align-items:center;justify-content:center
+}
+.img-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+.img-card:hover img{transform:scale(1.04)}
+.img-card .img-cap{padding:14px 16px}
+.img-card .img-cap .lb{font-size:10px;font-weight:800;color:var(--drb-red);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.img-card .img-cap .ttl{font-size:14px;font-weight:800;line-height:1.4;color:var(--text);margin-bottom:4px}
+.img-card .img-cap .dsc{font-size:12px;color:var(--text2);line-height:1.6}
+
+@media(max-width:820px){
+  .img-grid{grid-template-columns:1fr}
+  .img-card .img-wrap{aspect-ratio:4/3}
+}
+
+.footer{text-align:center;font-size:11px;color:var(--text3);line-height:1.7;margin-top:18px;padding:14px 0 0}
+
+@media(max-width:920px){
+  .main{padding:22px 16px 68px calc(var(--sidebar-w) + 16px)}
+}
+@media(max-width:768px){
+  .sidebar{transform:translateX(calc(var(--sidebar-w)*-1))}
+  .main{padding-left:16px}
+  .sb-btn,.sb-btn.shifted{left:14px}
+}
+@media(max-width:720px){
+  body{font-size:14px}
+  .main-title h1{font-size:22px}
+  .section-head{padding:18px 18px 14px}
+  .section-body{padding:16px 18px 18px}
+  .section-info h2{font-size:18px}
+}
+</style>
+</head>
+<body>
+
+<button class="sb-btn shifted" onclick="togSB()">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+
+<aside class="sidebar" id="sb">
+  <div class="sidebar-hd"><div><div class="sidebar-logo">DRB <span>C2B</span></div><div class="sidebar-sub">Chain to Belt 전환 프로젝트</div></div></div>
+  <nav class="sidebar-nav">
+    <div class="nav-grp">
+      <a class="nav-i" href="index.html"><div class="nav-dot"></div>1차 보고 자료</a>
+    </div>
+    <div class="nav-grp">
+      <a class="nav-i" href="C2B_p1.html"><div class="nav-dot"></div>진행사항 점검 및 향후 방향검토</a>
+    </div>
+    <div class="nav-grp">
+      <div class="nav-grp-t clickable" onclick="togGrp(this)">
+        <span>3월 진행사항</span>
+        <svg class="chev" viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="nav-sub">
+        <a class="nav-i" href="C2B_P2.html"><div class="nav-dot"></div>Chain → Belt 전환단계<span class="nav-status done">완료</span></a>
+        <a class="nav-i" href="C2B_P3.html"><div class="nav-dot"></div>타겟시장 분석<span class="nav-status review">검토중</span></a>
+      </div>
+    </div>
+    <div class="nav-grp">
+      <div class="nav-grp-t clickable" onclick="togGrp(this)">
+        <span>4월 진행사항</span>
+        <svg class="chev" viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="nav-sub">
+        <a class="nav-i" href="C2B_P3.html"><div class="nav-dot"></div>타겟시장 분석<span class="nav-status review">검토중</span></a>
+        <a class="nav-i active" href="C2B_P4.html"><div class="nav-dot"></div>유통망 기반 실차 테스트<span class="nav-status review">검토중</span></a>
+      </div>
+    </div>
+  </nav>
+</aside>
+
+<div class="main" id="mn">
+
+<div class="main-title">
+  <h1>유통망 기반 실차 테스트</h1>
+  <p>DRB 기존 유통망을 활용한 C2B 타겟 업체 발굴 · 현장 테스트 · 최종 선정 로드맵</p>
+</div>
+
+<!-- ============== 섹션 1: 진행 로드맵 ============== -->
+<div class="section s-red">
+  <div class="section-head">
+    <div class="section-num">1</div>
+    <div class="section-info">
+      <h2>진행 로드맵</h2>
+      <div class="sub">유통망 활용 → 실차 테스트 → 6월 최종 타겟 확정</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="roadmap">
+      <div class="rm-step now">
+        <div class="rm-n">STEP 01</div>
+        <div class="rm-t">타겟 업체 발굴</div>
+        <div class="rm-d">DRB 기존 유통망(특약점·대리점)을 통해 C2B 전환 가능 업체 발굴 및 접촉</div>
+        <div class="rm-badge">진행중</div>
+      </div>
+      <div class="rm-arrow">→</div>
+      <div class="rm-step now">
+        <div class="rm-n">STEP 02</div>
+        <div class="rm-t">실차 테스트</div>
+        <div class="rm-d">스태커 체인 → 벨트 전환 테스트 진행 (체인/벨트/비교 장비 구성)</div>
+        <div class="rm-badge">진행중</div>
+      </div>
+      <div class="rm-arrow">→</div>
+      <div class="rm-step plan">
+        <div class="rm-n">STEP 03</div>
+        <div class="rm-t">최종 타겟 확정</div>
+        <div class="rm-d"><b>6월까지</b> 테스트 결과 기반 최종 타겟 업체 선정 완료</div>
+        <div class="rm-badge">예정</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============== 섹션 2: 특약점 방문 ============== -->
+<div class="section s-red">
+  <div class="section-head">
+    <div class="section-num">2</div>
+    <div class="section-info">
+      <h2>특약점 방문</h2>
+      <div class="sub">금성콘베어(12648) · CB 특약점(일반A) · 25년 매출 1.6억</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <!-- 체인 선택 이유 -->
+    <div class="sub-hd">체인 설계 유지 이유 — 고객 관점</div>
+    <ul class="insight-list">
+      <li><b>설계 관성</b> — 설비에 체인·벨트 설계가 혼재하나, 기존 체인 설계 기계는 관성적으로 체인 방식 유지</li>
+      <li><b>구조적 신뢰</b> — 외관상 튼튼해 보이고 인장 측면에서 유리하다고 판단하여 체인 선호</li>
+      <li><b>초기 비용</b> — 체인이 벨트 대비 단순 구매 단가로 저렴 (초기 비용 중심 판단)</li>
+    </ul>
+
+    <!-- 협의 사항 -->
+    <div class="sub-hd">고객사 업무 협의사항</div>
+    <ul class="agree-list">
+      <li>금성콘베어 기계 제작 시 <b>체인 대체 벨트 적용 검토</b> 요청</li>
+      <li>기존 체인 설계된 설비는 <b>체인 규격 공유 시 DRB 벨트 전환 제안</b> 협의</li>
+      <li>벨트 및 풀리 <b>전환비용은 DRB 제공</b>으로 도입 부담 해소</li>
+    </ul>
+
+  </div>
+</div>
+
+<!-- ============== 섹션 3: 실차 테스트 진행사항 ============== -->
+<div class="section s-gold">
+  <div class="section-head">
+    <div class="section-num">3</div>
+    <div class="section-info">
+      <h2>실차 테스트 진행사항</h2>
+      <div class="sub">스태커(Stacker) 체인 → 벨트 전환 비교 테스트</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="img-grid">
+      <div class="img-card">
+        <div class="img-wrap"><img src="p4_1.jpeg" alt="체인 장착 스태커" loading="lazy"></div>
+        <div class="img-cap">
+          <div class="lb">P4_1</div>
+          <div class="ttl">체인 장착 스태커</div>
+          <div class="dsc">기존 사양 — 리프트 체인 방식 베이스라인 장비</div>
+        </div>
+      </div>
+      <div class="img-card">
+        <div class="img-wrap"><img src="p4_2.jpeg" alt="DRB 벨트 장착 스태커" loading="lazy"></div>
+        <div class="img-cap">
+          <div class="lb">P4_2</div>
+          <div class="ttl">DRB 벨트 장착 스태커</div>
+          <div class="dsc">전환 사양 — DRB 벨트 적용 후 실하중(1.5톤 파렛트) 승강 테스트</div>
+        </div>
+      </div>
+      <div class="img-card">
+        <div class="img-wrap"><img src="p4_3.jpeg" alt="체인 & 벨트 장착 스태커" loading="lazy"></div>
+        <div class="img-cap">
+          <div class="lb">P4_3</div>
+          <div class="ttl">체인 & 벨트 비교 장비</div>
+          <div class="dsc">동일 장비에 체인(좌) / Carbon-PU 벨트(우) 동시 장착 — 직접 비교용</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  DRB C2B 프로젝트 — Chain to Belt 전환 프로젝트 · 유통망 기반 실차 테스트
+</div>
+
+</div>
+
+<script>
+function togSB(){var s=document.getElementById('sb'),m=document.getElementById('mn'),b=document.querySelector('.sb-btn');s.classList.toggle('closed');m.classList.toggle('exp');b.classList.toggle('shifted')}
+function togGrp(el){el.classList.toggle('collapsed');el.nextElementSibling.classList.toggle('collapsed')}
+</script>
+</body>
+</html>
