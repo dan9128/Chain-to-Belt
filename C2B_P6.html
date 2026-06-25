@@ -201,7 +201,53 @@ table.dt tbody tr:hover td{background:var(--drb-red-soft)}
 </head>
 <body>
 
-<script src="nav.js"></script>
+<button class="sb-btn shifted" onclick="togSB()">
+  <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+
+<aside class="sidebar" id="sb">
+  <div class="sidebar-hd">
+    <div><div class="sidebar-logo">DRB <span>C2B</span></div><div class="sidebar-sub">Chain to Belt 전환 프로젝트</div></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-grp">
+      <a class="nav-i" href="index.html"><div class="nav-dot"></div>1차 보고 자료</a>
+    </div>
+    <div class="nav-grp">
+      <a class="nav-i" href="C2B_P1.html"><div class="nav-dot"></div>진행사항 점검 및 향후 방향검토</a>
+    </div>
+    <div class="nav-grp">
+      <div class="nav-grp-t clickable collapsed" onclick="togGrp(this)">
+        <span>3월 진행사항</span>
+        <svg class="chev" viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="nav-sub collapsed">
+        <a class="nav-i" href="C2B_P2.html"><div class="nav-dot"></div>Chain → Belt 전환단계<span class="nav-status done">완료</span></a>
+        <a class="nav-i" href="C2B_P3.html"><div class="nav-dot"></div>타겟시장 분석<span class="nav-status review">검토중</span></a>
+      </div>
+    </div>
+    <div class="nav-grp">
+      <div class="nav-grp-t clickable collapsed" onclick="togGrp(this)">
+        <span>4월 진행사항</span>
+        <svg class="chev" viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="nav-sub collapsed">
+        <a class="nav-i" href="C2B_P3.html"><div class="nav-dot"></div>타겟시장 분석 (산업군)<span class="nav-status review">검토중</span></a>
+        <a class="nav-i" href="C2B_P4.html"><div class="nav-dot"></div>DRB 유통망 기반 실차 테스트 (특약점대상)<span class="nav-status review">검토중</span></a>
+        <a class="nav-i" href="C2B_P5.html"><div class="nav-dot"></div>실차 테스트 진행사항<span class="nav-status review">검토중</span></a>
+      </div>
+    </div>
+    <div class="nav-grp">
+      <div class="nav-grp-t clickable" onclick="togGrp(this)">
+        <span>6월 진행사항</span>
+        <svg class="chev" viewBox="0 0 12 12"><path d="M2 4 L6 8 L10 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="nav-sub">
+        <a class="nav-i active" href="C2B_P6.html"><div class="nav-dot"></div>업체 조사 (자전거 · 지게차 어태치먼트 · 이륜차)<span class="nav-status review">조사중</span></a>
+      </div>
+    </div>
+  </nav>
+</aside>
 
 <div class="main" id="mn">
 
@@ -235,6 +281,13 @@ table.dt tbody tr:hover td{background:var(--drb-red-soft)}
         <tr><th>모델</th><th>구분</th><th>조사 내용</th></tr>
         <tr><td><b>얼리라이더<br>(Early Rider)</b></td><td class="center"><span class="lv h">벨트 구동 ○</span></td><td><b>Belter 시리즈</b>(14·16·20·24")가 <b>Gates 카본벨트</b> 구동 채택.<br>Belter 16은 "세계 최다 판매 벨트구동 자전거"로 소개됨.</td></tr>
       </table>
+    </div>
+
+    <div class="tbl-wrap" style="padding:8px">
+      <div class="tbl-t">얼리라이더 — 벨트 구동부</div>
+      <img src="img/earlyrider_belt.jpg" alt="얼리라이더 벨트 구동부 — Gates 카본벨트(무윤활·정숙 구동) 적용" style="width:100%;height:auto;display:block;border-radius:10px;background:#000;aspect-ratio:16/9;object-fit:cover" onerror="this.style.display=&#39;none&#39;;this.nextElementSibling.style.display=&#39;flex&#39;">
+      <div style="display:none;align-items:center;justify-content:center;text-align:center;aspect-ratio:16/9;border-radius:10px;background:var(--drb-gray-soft);color:var(--text3);font-size:12px;line-height:1.6;padding:16px">사진 파일을 <b style="margin:0 3px">img/earlyrider_belt.jpg</b> 경로에 넣으면 표시됩니다.</div>
+      <div class="mk-note" style="padding:8px 8px 6px;font-size:11.5px;color:var(--text3);line-height:1.6">※ 얼리라이더 벨트 구동부 — Gates 카본벨트(무윤활·정숙 구동) 적용</div>
     </div>
 
     <div class="exmp" style="border-color:var(--border);border-left-color:var(--drb-gray);background:var(--drb-gray-soft)"><div class="et">Gates 벨트 핵심 내용 — "변속 불가"</div><div class="eb"><span class="ci">벨트 구동은 <b>외장 변속 사용 불가</b></span></div></div>
